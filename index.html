@@ -1747,7 +1747,7 @@ function haptic(strong){
   if (!hapticSwitch){
     hapticSwitch = document.createElement("label");
     hapticSwitch.setAttribute("aria-hidden", "true");
-    hapticSwitch.style.cssText = "position:fixed;left:-9999px;top:0;width:1px;height:1px;overflow:hidden;opacity:0;pointer-events:none";
+    hapticSwitch.style.cssText = "position:fixed;left:0;top:0;width:1px;height:1px;overflow:hidden;opacity:.01;pointer-events:none;z-index:-1";
     hapticSwitch.innerHTML = '<input type="checkbox" switch tabindex="-1">';
     hapticSwitch.addEventListener("click", e => e.stopPropagation());
     document.body.appendChild(hapticSwitch);
@@ -1782,9 +1782,10 @@ function initDial(k){
     if (Math.abs(v - state.dial[k]) > (d.max - d.min) / 2) v = state.dial[k] > (d.min + d.max) / 2 ? d.max : d.min;
     set(v);
   };
-  knob.addEventListener("pointerdown", e => { knob.setPointerCapture(e.pointerId); knob.classList.add("grab"); fromPointer(e); });
+  // iPhone only allows a tap at touch-down and lift-off, not while the finger slides, so tap there too
+  knob.addEventListener("pointerdown", e => { knob.setPointerCapture(e.pointerId); knob.classList.add("grab"); if (!navigator.vibrate) haptic(false); fromPointer(e); });
   knob.addEventListener("pointermove", e => { if (knob.hasPointerCapture(e.pointerId)) fromPointer(e); });
-  knob.addEventListener("pointerup", e => { knob.classList.remove("grab"); if (knob.hasPointerCapture(e.pointerId)) knob.releasePointerCapture(e.pointerId); });
+  knob.addEventListener("pointerup", e => { knob.classList.remove("grab"); if (!navigator.vibrate) haptic(state.dial[k] === d.min || state.dial[k] === d.max); if (knob.hasPointerCapture(e.pointerId)) knob.releasePointerCapture(e.pointerId); });
   paintDial(k);
 }
 function initTimer(){
