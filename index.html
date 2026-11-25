@@ -449,6 +449,8 @@ footer{border-top:0}
 .dial-orb{position:absolute;inset:30px;border-radius:50%;display:grid;place-content:center;gap:2px;color:var(--orb-ink);
   background:radial-gradient(circle at 34% 28%,rgba(255,255,255,.75) 0,rgba(255,255,255,0) 32%),radial-gradient(circle at 50% 42%,var(--o1) 0,var(--o2) 58%,var(--o3) 100%);
   box-shadow:0 12px 26px -8px var(--o3),inset 0 -8px 16px rgba(0,0,0,.14),inset 0 6px 14px rgba(255,255,255,.5)}
+.dial-orb.tick{animation:orb-tick .16s ease-out}
+@keyframes orb-tick{40%{transform:scale(.965)}}
 .orb-cap{font-size:.62rem;font-weight:600;letter-spacing:.2em;text-transform:uppercase;opacity:.75}
 .orb-val{font-size:clamp(2.2rem,6vw,2.9rem);font-weight:600;line-height:1;letter-spacing:-.03em;font-variant-numeric:tabular-nums}
 .orb-unit{font-size:.72rem;opacity:.8}
@@ -1555,8 +1557,7 @@ const MOODS = [
   {key:"hungry",  label:"Starving",    shape:"square",   color:"#efc898", pos:[62,30,30,10], hint:"big, filling plates",         title:"Big plates for big appetites",   test:r => r.category === "Mains" && r.serves >= 4},
   {key:"quick",   label:"In a rush",   shape:"bolt",     color:"#f5dcb8", pos:[34,28,28,-4], hint:"ready in 25 minutes or less", title:"Ready in 25 minutes or less",    test:r => r.time > 0 && r.time <= 25},
   {key:"sweet",   label:"Sweet tooth", shape:"round",    color:"#e3a3e8", pos:[0,44,30,4],  hint:"desserts and bakes",           title:"Desserts and bakes",             test:r => r.category === "Desserts" || r.category === "Baking"},
-  {key:"fresh",   label:"Fresh",       shape:"blob",     color:"#a9b8f0", pos:[22,62,34,-8], hint:"light, bright and herby",     title:"Light, bright and fresh",        test:r => r.category === "Salads" || /\b(lime|lemon|mint|cucumber|papaya)\b/i.test((r.ingredients||[]).join(" "))},
-  {key:"spicy",   label:"Fiery",       shape:"triangle", color:"#eea48f", pos:[60,62,36,6],  hint:"dishes with real heat",       title:"Dishes with real heat",          test:r => /chil(i|li|e)|peperoncino/i.test([r.title, ...(r.ingredients||[])].join(" "))}
+  {key:"fresh",   label:"Fresh",       shape:"blob",     color:"#a9b8f0", pos:[22,62,34,-8], hint:"light, bright and herby",     title:"Light, bright and fresh",        test:r => r.category === "Salads" || /\b(lime|lemon|mint|cucumber|papaya)\b/i.test((r.ingredients||[]).join(" "))}
 ];
 const QUIZ = [
   {key:"over30",  title:"Worth the wait: over 30 minutes", test:r => r.time > 30},
@@ -1738,12 +1739,33 @@ function paintDialResults(){
     ${n > 8 ? `<div class="look-actions"><button class="btn" type="button" id="timeAll">${state.timeAll ? "Show fewer" : `Show all ${n}`}</button></div>` : ""}` : "";
   const ta = document.getElementById("timeAll"); if (ta) ta.onclick = () => { state.timeAll = !state.timeAll; paintDialResults(); };
 }
+/* touch feedback while turning a dial: a light tap on every step, a firmer one at either end.
+   Android uses the vibration API; iPhone (Safari 18+) gets its tap from toggling a hidden switch. */
+let hapticSwitch = null;
+function haptic(strong){
+  if (navigator.vibrate){ navigator.vibrate(strong ? 22 : 8); return; }
+  if (!hapticSwitch){
+    hapticSwitch = document.createElement("label");
+    hapticSwitch.setAttribute("aria-hidden", "true");
+    hapticSwitch.style.cssText = "position:fixed;left:-9999px;top:0;width:1px;height:1px;overflow:hidden;opacity:0;pointer-events:none";
+    hapticSwitch.innerHTML = '<input type="checkbox" switch tabindex="-1">';
+    hapticSwitch.addEventListener("click", e => e.stopPropagation());
+    document.body.appendChild(hapticSwitch);
+  }
+  hapticSwitch.click();
+  if (strong) setTimeout(() => hapticSwitch && hapticSwitch.click(), 60);
+}
+function dialTick(k, strong){
+  haptic(strong);
+  const orb = document.querySelector("#dial-" + k + " .dial-orb");
+  if (orb && !reduceMotion()){ orb.classList.remove("tick"); void orb.offsetWidth; orb.classList.add("tick"); }
+}
 function initDial(k){
   const d = DIALS[k], knob = document.getElementById("dial-" + k); if (!knob) return;
   const set = v => {
     if (!dialOn(k)) state.dialMode = "both";   // using a switched-off dial turns it back on
     v = Math.round(Math.min(d.max, Math.max(d.min, v)) / d.step) * d.step;
-    if (v !== state.dial[k]) { state.dial[k] = v; paintDial(k); }
+    if (v !== state.dial[k]) { state.dial[k] = v; paintDial(k); dialTick(k, v === d.min || v === d.max); }
     paintDialResults();
   };
   knob.addEventListener("keydown", e => {
