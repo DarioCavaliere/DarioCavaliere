@@ -298,7 +298,9 @@ footer{border-top:1.5px solid var(--line)}
 .top .brand{flex:none}
 .top-search{flex:1 1 auto;max-width:520px;margin-inline:auto}
 .top-search input{padding-block:11px}
-@media (max-width:900px){.top .brand span:last-child{display:none}}
+@media (max-width:900px){.top .brand{flex-direction:column;align-items:flex-start;gap:3px}.top .brand span:last-child{font-size:.74rem;line-height:1.2;white-space:nowrap}}
+@media (max-width:440px){.sb-long{display:none}}
+@media (max-width:370px){#topbar{gap:12px 8px}.top .menu-btn{width:40px;height:40px}}
 @media (max-width:640px){.top{flex-wrap:wrap;gap:12px 10px}.top .brand{margin-right:auto}.top-search{order:3;flex-basis:100%;max-width:none}}
 .mh-text{display:flex;flex-direction:column;justify-content:center;gap:18px}
 .mh-text h1{font-size:clamp(2.4rem,6.2vw,4.4rem);line-height:1.02;letter-spacing:-.035em;max-width:9ch}
@@ -598,7 +600,7 @@ footer{color:var(--ink)}
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
       <input id="q" type="search" placeholder="Search recipes or ingredients" aria-label="Search recipes" autocomplete="off">
     </div>
-    <a class="btn primary" href="#share" id="shareBtn">+ Share a recipe</a>
+    <a class="btn primary" href="#share" id="shareBtn" aria-label="Share a recipe">+ Share<span class="sb-long"> a recipe</span></a>
     <button class="menu-btn" id="menuBtn" type="button" aria-label="Menu" aria-expanded="false" aria-controls="menuPanel"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
     <button class="menu-btn" id="themeBtn" type="button" aria-label="Switch to dark mode"></button>
     <div class="menu-panel" id="menuPanel" role="dialog" aria-label="Menu" hidden></div>
