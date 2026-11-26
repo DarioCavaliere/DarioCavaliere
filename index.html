@@ -110,6 +110,14 @@ h1,h2,h3{font-family:var(--display);font-weight:600;letter-spacing:-.02em;text-w
 .keep p{margin:0;line-height:1.65}
 .hero-box{margin:0 auto;width:100%;max-width:880px;aspect-ratio:1200/670;border:var(--b-line);border-radius:30px;overflow:hidden;background:var(--art-bg)}
 .hero-box img{display:block;width:100%;height:100%;object-fit:cover}
+.look-art.look-box{width:100%;max-width:none;aspect-ratio:1200/670;border:var(--b-line);border-radius:30px;overflow:hidden;background:var(--art-bg);box-shadow:none}
+.look-box img{display:block;width:100%;height:100%;object-fit:cover}
+.box-ph{position:relative;width:100%;height:100%;display:grid;place-items:center;background:var(--art-bg)}
+.box-ph .art.ph-art{height:80%;width:auto;aspect-ratio:1;border:0;box-shadow:none;background:transparent}
+.ph-tag{position:absolute;left:14px;bottom:12px;padding:4px 10px;border:2px solid #161616;border-radius:999px;background:#fff;color:#161616;font-size:.72rem;font-weight:600;letter-spacing:.02em}
+.look-box .ph-tag{display:none}
+.look-tile:hover .look-art.look-box,.look-tile:focus-visible .look-art.look-box{transform:translate(-3px,-3px);box-shadow:6px 6px 0 #161616}
+@media (max-width:640px){.look-art.look-box{border-radius:24px}}
 @media (max-width:640px){.hero-box{border-radius:24px}}
 .hero-box + .dhead{margin-top:4px}
 .img-note{margin:18px 0 0;max-width:65ch;font-size:.8rem;font-style:italic;line-height:1.5;color:var(--muted)}
@@ -554,6 +562,10 @@ h1,h2,h3,.section-h h3,.mood-pick h1{font-family:var(--display);font-weight:800;
 .look-art{border:var(--b-line)}
 .look-tile:hover .look-art,.look-tile:focus-visible .look-art{box-shadow:6px 6px 0 #161616}
 .look-tile{color:var(--ink)}
+main .look-grid{grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:18px 18px}
+@media (max-width:560px){main .look-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:14px 12px}}
+.look-tile .look-name{max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.look-tile:hover .look-art.look-box,.look-tile:focus-visible .look-art.look-box{transform:translate(-3px,-3px);box-shadow:6px 6px 0 #161616}
 
 /* pills: white with outline; chosen = black */
 .btn,.chip,.mchip{background:var(--b-white);border:var(--b-line);box-shadow:none;color:#161616;font-weight:600}
@@ -720,8 +732,9 @@ const PHOTOS = {
   "j-tsukemen": {src:"assets/food/j-tsukemen.webp", w:480, h:480, cx:240, cy:240, rx:240, ry:240},
   "m-pastor": {src:"assets/food/m-pastor.webp", w:480, h:480, cx:240, cy:240, rx:240, ry:240}
 };
-/* recipes whose page opens with a wide, boxed photo above the title (cards keep the round crop) */
-const WIDE = new Set(["r-tagliolini-cavolfiore"]);
+/* every dish with a photo opens its page with the wide photo boxed above the title, and shows it boxed in
+   "Choose by the look" (recipe cards keep the round crop). The wide files sit next to the square ones. */
+const WIDE = {has: id => !!PHOTOS[id]};
 function photoImg(p, fill, alt){
   const sx = fill/(2*p.rx), sy = fill/(2*p.ry);
   const st = `width:${(p.w*sx*100).toFixed(2)}%;height:${(p.h*sy*100).toFixed(2)}%;left:${(50-p.cx*sx*100).toFixed(2)}%;top:${(50-p.cy*sy*100).toFixed(2)}%`;
@@ -857,6 +870,15 @@ function dishArt(r, cls){
   const photo = !r.house && PHOTO_RE.test(r.photo || "") ? `<img class="photo" src="/_blob/${r.photo}" alt="Photo of ${esc(r.title)}" loading="lazy">` : "";
   return `<div class="art ${cls}"${photo ? "" : ` role="img" aria-label="Illustration of ${esc(r.title)}"`}>${dishSVG(r)}${photo}</div>`;
 }
+/* "Choose by the look": the same box as the recipe page. Photos fill it; dishes without one show their illustration inside it */
+/* what fills a photo box: the wide photo, a shared recipe's uploaded photo, or a placeholder
+   (the dish illustration on the cream ground with a "Photo coming soon" tag) */
+function boxInner(r, alt){
+  if (r.house && PHOTOS[r.id]) return `<img src="assets/food/${r.id}-wide.webp" alt="${esc(alt)}" loading="lazy" decoding="async">`;
+  if (!r.house && PHOTO_RE.test(r.photo || "")) return `<img class="photo" src="/_blob/${r.photo}" alt="${esc(alt)}" loading="lazy">`;
+  return `<div class="box-ph">${dishArt(r, "ph-art")}<span class="ph-tag">Photo coming soon</span></div>`;
+}
+function lookArt(r){ return `<div class="look-art look-box">${boxInner(r, "")}</div>`; }
 document.addEventListener("error", e => { if (e.target.classList && e.target.classList.contains("photo")) e.target.hidden = true; }, true);
 const HOUSE = [
   {id:"h-aglio",title:"Spaghetti aglio, olio e peperoncino",category:"Mains",time:20,serves:2,cuisine:"italian",region:"Campania",
@@ -2072,8 +2094,8 @@ function renderDetail(id){
   view.innerHTML = `
     <a class="btn ghost back" href="#">← All recipes</a>
     <article class="detail">
-      ${WIDE.has(r.id) ? `<figure class="hero-box"><img src="assets/food/${r.id}-wide.webp" alt="Photo of ${esc(r.title)}" width="1200" height="670" decoding="async"></figure>` : ""}
-      <div class="dhead">${WIDE.has(r.id) ? "" : dishArt(r, "hero-art")}<header>
+      <figure class="hero-box">${boxInner(r, "Photo of " + r.title)}</figure>
+      <div class="dhead"><header>
         <span class="eyebrow">${esc(r.category)}</span>
         <div class="title-row"><h2>${esc(r.title)}</h2>${heartBtn(r, "fav-lg")}</div>
         <p class="lede">${esc(r.summary)}</p>
@@ -2215,7 +2237,7 @@ function shuffled(reset){
   return lookOrder.map(id => byId.get(id)).filter(Boolean);
 }
 function lookTiles(list){
-  return list.map(r => `<a class="look-tile" href="${recipeHref(r)}" aria-label="${esc(r.title)}">${dishArt(r, "look-art")}<span class="look-name" aria-hidden="true">${esc(r.title)}</span></a>`).join("");
+  return list.map(r => `<a class="look-tile" href="${recipeHref(r)}" aria-label="${esc(r.title)}">${lookArt(r)}<span class="look-name" aria-hidden="true">${esc(r.title)}</span></a>`).join("");
 }
 function renderLook(){
   view.innerHTML = `
