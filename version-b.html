@@ -1689,7 +1689,8 @@ const MOODS = [
 const MEALS = [
   {key:"breakfast", label:"Breakfast", title:"For breakfast", test:r => r.category === "Breakfast" || /shakshuka|chilaquiles|pancake|frittata|banana bread/i.test(r.title || "")},
   {key:"lunch",     label:"Lunch",     title:"For lunch",     test:r => ["Salads", "Soups", "Starters"].includes(r.category) || (r.category === "Mains" && Number(r.time) > 0 && r.time <= 30) || /wrap|bowl|tacos|puccia|arayes|meal prep|panzanella|torta salata/i.test(r.title || "")},
-  {key:"dinner",    label:"Dinner",    title:"For dinner",    test:r => r.category === "Mains"}
+  {key:"dinner",    label:"Dinner",    title:"For dinner",    test:r => r.category === "Mains"},
+  {key:"dessert",   label:"Dessert",   title:"For dessert",   test:r => r.category === "Desserts" || r.category === "Baking"}
 ];
 const QUIZ = [
   {key:"over30",  title:"Worth the wait: over 30 minutes", test:r => r.time > 30},
