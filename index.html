@@ -108,6 +108,7 @@ h1,h2,h3{font-family:var(--display);font-weight:600;letter-spacing:-.02em;text-w
 .keep{margin-top:14px;max-width:65ch;padding:16px 18px;border:1.5px solid var(--line);border-radius:16px;display:grid;gap:6px}
 .keep h4{margin:0;font-size:.76rem;font-weight:600;text-transform:uppercase;letter-spacing:.14em;color:var(--muted)}
 .keep p{margin:0;line-height:1.65}
+.img-note{margin:18px 0 0;max-width:65ch;font-size:.8rem;font-style:italic;line-height:1.5;color:var(--muted)}
 .owner-actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center;font-size:.88rem;color:var(--muted)}
 
 /* share form */
@@ -699,7 +700,12 @@ const PHOTOS = {
   "r-tagliolini-salmone": {src:"assets/food/r-tagliolini-salmone.webp", w:480, h:480, cx:240, cy:240, rx:240, ry:240},
   "j-miso": {src:"assets/food/j-miso.webp", w:480, h:480, cx:240, cy:240, rx:240, ry:240},
   "n-palak": {src:"assets/food/n-palak.webp", w:480, h:480, cx:240, cy:240, rx:240, ry:240},
-  "i-melone": {src:"assets/food/i-melone.webp", w:480, h:480, cx:240, cy:240, rx:240, ry:240}
+  "i-melone": {src:"assets/food/i-melone.webp", w:480, h:480, cx:240, cy:240, rx:240, ry:240},
+  "m-guacamole": {src:"assets/food/m-guacamole.webp", w:480, h:480, cx:240, cy:240, rx:240, ry:240},
+  "m-esquites": {src:"assets/food/m-esquites.webp", w:480, h:480, cx:240, cy:240, rx:240, ry:240},
+  "i-arancini": {src:"assets/food/i-arancini.webp", w:480, h:480, cx:240, cy:240, rx:240, ry:240},
+  "i-orecchiette": {src:"assets/food/i-orecchiette.webp", w:480, h:480, cx:240, cy:240, rx:240, ry:240},
+  "n-biryani": {src:"assets/food/n-biryani.webp", w:480, h:480, cx:240, cy:240, rx:240, ry:240}
 };
 function photoImg(p, fill, alt){
   const sx = fill/(2*p.rx), sy = fill/(2*p.ry);
@@ -1995,7 +2001,8 @@ function methodHTML(r){
   const intro = `${total ? `Plan for about ${esc(total)}; it serves ${esc(r.serves)}. If the description mentions soaking, marinating or chilling, do that ahead. ` : ""}Read the method through once before you begin, and have your ingredients weighed and chopped, so the cooking itself flows without a rush.`;
   return `<p class="method-intro">${intro}</p>
     <ol class="steps">${lines.map((s, i) => `<li><span class="step-n">Step ${i + 1}</span><p>${esc(s)}</p></li>`).join("")}</ol>
-    <section class="keep"><h4>Keeping leftovers</h4><p>${esc(storageTip(r))}</p></section>`;
+    <section class="keep"><h4>Keeping leftovers</h4><p>${esc(storageTip(r))}</p></section>
+    <p class="img-note">Food images are visual representations of the recipe. Actual results may vary depending on ingredients, preparation and presentation.</p>`;
 }
 /* How to keep a dish for the next day or two, picked by the kind of dish */
 function storageTip(r){
