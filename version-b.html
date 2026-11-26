@@ -1011,7 +1011,7 @@ const HOUSE = [
 ].map(r => ({...r, house:true, art:ART[r.id]}));
 
 /* ---------- Italian courses + winter specials (written in Dado's own words) ---------- */
-const COURSES = {antipasti:"Antipasti", primi:"Primi", secondi:"Secondi", contorni:"Contorni", dolci:"Dolci", ramen:"Ramen"};
+const COURSES = {antipasti:"Starters", primi:"Primi", secondi:"Secondi", contorni:"Side dishes", dolci:"Dolci", ramen:"Ramen"};
 const COURSE_OF = {"h-aglio":"primi","h-carbonara":"primi","h-amatriciana":"primi","h-milanese":"primi","h-pesto":"primi","h-parmigiana":"secondi","h-tiramisu":"dolci"};
 HOUSE.forEach(r => { if (COURSE_OF[r.id]) r.course = COURSE_OF[r.id]; });
 const AP = {
@@ -1609,7 +1609,7 @@ function cardHTML(r){
       <div class="card-head">${dishArt(r, "thumb")}<div class="ch-text"><span class="eyebrow">${r.special ? "Winter special · " : ""}${esc(COURSES[r.course] || r.category)}${k ? " · " + esc(k.name) : ""}${r.diet ? " · " + esc(r.diet) : ""}${r.twist ? " · Modern twist" : ""}</span>
       <h3>${esc(r.title)}</h3>${traitIcons(r)}</div></div>
       <p>${esc(r.summary)}</p>
-      <div class="meta"><span>${esc(fmtTime(r.time))}</span><span>serves ${esc(r.serves)}</span>${kcal(r) ? `<span title="Approximate calories per serving">≈ ${kcal(r)} kcal</span>` : ""}${r.region ? `<span>${esc(r.region)}</span>` : ""}${r.house ? "" : `<span class="by">by ${esc(authorName(r))}</span>`}</div>
+      <div class="meta"><span>${esc(fmtTime(r.time))}</span><span>serves ${esc(r.serves)}</span>${kcal(r) ? `<span title="Approximate calories per serving">≈ ${kcal(r)} kcal</span>` : ""}${r.house ? "" : `<span class="by">by ${esc(authorName(r))}</span>`}</div>
     </a></div>`;
 }
 /* each kitchen keeps its own colour; new kitchens cycle through the palette */
@@ -2144,7 +2144,7 @@ function renderDetail(id){
         <div class="title-row"><h2>${esc(r.title)}</h2>${heartBtn(r, "fav-lg")}</div>
         <p class="lede">${esc(r.summary)}</p>
         ${traitRow(r)}
-        <div class="facts"><span>Time <b>${esc(fmtTime(r.time))}</b></span><span>Serves <b>${esc(r.serves)}</b></span>${COURSES[r.course] ? `<span>Course <b style="font-family:var(--body)">${COURSES[r.course]}</b></span>` : ""}${r.diet ? `<span>Diet <b style="font-family:var(--body)">${esc(r.diet)}</b></span>` : ""}${kitchenOf(r.cuisine) ? `<span>Kitchen <a href="#k-${r.cuisine}"><b style="font-family:var(--body)">${esc(kitchenOf(r.cuisine).name)}</b></a></span>` : ""}${r.region ? `<span>Region <b style="font-family:var(--body)">${esc(r.region)}</b></span>` : ""}${kcal(r) ? `<span>Calories <b>≈ ${kcal(r)} kcal</b> per serving</span>` : ""}${r.house ? "" : `<span>Shared by <b style="font-family:var(--body)">${esc(authorName(r))}</b></span>`}</div>
+        <div class="facts"><span>Time <b>${esc(fmtTime(r.time))}</b></span><span>Serves <b>${esc(r.serves)}</b></span>${COURSES[r.course] ? `<span>Course <b style="font-family:var(--body)">${COURSES[r.course]}</b></span>` : ""}${r.diet ? `<span>Diet <b style="font-family:var(--body)">${esc(r.diet)}</b></span>` : ""}${kitchenOf(r.cuisine) ? `<span>Kitchen <a href="#k-${r.cuisine}"><b style="font-family:var(--body)">${esc(kitchenOf(r.cuisine).name)}</b></a></span>` : ""}${kcal(r) ? `<span>Calories <b>≈ ${kcal(r)} kcal</b> per serving</span>` : ""}${r.house ? "" : `<span>Shared by <b style="font-family:var(--body)">${esc(authorName(r))}</b></span>`}</div>
       </header></div>
       <div class="cols">
         <section class="panel">
@@ -2212,8 +2212,7 @@ function renderShare(){
         <div class="field"><label for="serves">Serves</label><input id="serves" type="number" min="1" max="99" inputmode="numeric" placeholder="4"></div>
       </div>
       <div class="row two">
-        <div class="field"><label for="cuisine">Regional kitchen <small>(optional)</small></label><select id="cuisine"><option value="">None</option>${KITCHENS.map(k=>`<option value="${k.key}" ${state.preKitchen===k.key?"selected":""}>${esc(k.name)}</option>`).join("")}</select></div>
-        <div class="field"><label for="region">Region or city <small>(optional)</small></label><input id="region" maxlength="40" placeholder="e.g. Sicilia, Isan, Osaka"></div>
+        <div class="field"><label for="cuisine">Kitchen <small>(optional)</small></label><select id="cuisine"><option value="">None</option>${KITCHENS.map(k=>`<option value="${k.key}" ${state.preKitchen===k.key?"selected":""}>${esc(k.name)}</option>`).join("")}</select></div>
       </div>
       <div class="field"><label for="ingredients">Ingredients</label><small>One per line. Start with the amount so it can scale: <span class="qty">200 g flour</span>, <span class="qty">1 1/2 tsp salt</span></small>
         <textarea id="ingredients" class="mono" placeholder="200 g flour&#10;2 eggs&#10;1/2 tsp salt"></textarea></div>
@@ -2233,7 +2232,7 @@ function renderShare(){
     const lines = s => s.split("\n").map(x => x.trim()).filter(Boolean);
     const msg = document.getElementById("msg"); msg.className = "msg";
     const rec = {id:"c"+Date.now().toString(36)+Math.random().toString(36).slice(2,6), title:v("title"), summary:v("summary"),
-      category:v("category"), cuisine:kitchenOf(v("cuisine")) ? v("cuisine") : "", region:v("region"), time:Math.round(+v("time"))||0, serves:Math.round(+v("serves"))||0,
+      category:v("category"), cuisine:kitchenOf(v("cuisine")) ? v("cuisine") : "", region:"", time:Math.round(+v("time"))||0, serves:Math.round(+v("serves"))||0,
       ingredients:lines(v("ingredients")), steps:lines(v("steps")), created:Date.now()};
     const missing = [!rec.title&&"a name", !rec.time&&"the total time", !rec.serves&&"servings", !rec.ingredients.length&&"ingredients", !rec.steps.length&&"method steps"].filter(Boolean);
     if (missing.length){ msg.className = "msg err"; msg.textContent = "Add " + missing.join(", ").replace(/, ([^,]*)$/, " and $1") + " before publishing."; return; }
@@ -2303,11 +2302,9 @@ function renderKitchen(key){
   if (!k){ location.hash = ""; return; }
   if (state.kitchenKey !== key){ state.kitchenKey = key; state.region = "All"; state.course = "All"; }
   const list = allRecipes().filter(r => r.cuisine === key);
-  const regions = [...new Set(list.map(r => r.region).filter(Boolean))].sort();
-  if (!regions.includes(state.region)) state.region = "All";
   const courses = Object.keys(COURSES).filter(c => list.some(r => r.course === c));
   if (!state.course || (state.course !== "All" && !courses.includes(state.course))) state.course = "All";
-  const shown = list.filter(r => (state.region === "All" || r.region === state.region) && (state.course === "All" || r.course === state.course));
+  const shown = list.filter(r => state.course === "All" || r.course === state.course);
   view.innerHTML = `
     <a class="btn ghost back" href="#">← All recipes</a>
     <section class="kitchen-head">
@@ -2315,10 +2312,8 @@ function renderKitchen(key){
       <h2>${esc(k.name)} kitchen</h2>
       <p class="lede">${esc(k.blurb)}</p>
       ${courses.length >= 1 ? `<div class="chips" role="group" aria-label="Course">${["All", ...courses].map(c => `<button class="chip" data-course="${c}" aria-pressed="${c === state.course}">${c === "All" ? "All dishes" : COURSES[c] + " · " + list.filter(r => r.course === c).length}</button>`).join("")}</div>` : ""}
-      ${regions.length > 1 ? `<div class="chips" role="group" aria-label="Region">${["All", ...regions].map(r => `<button class="chip" data-region="${esc(r)}" aria-pressed="${r === state.region}">${r === "All" ? "All regions" : esc(r)}</button>`).join("")}</div>` : ""}
     </section>
     <div class="grid">${shown.length ? shown.map(cardHTML).join("") : `<div class="empty">No ${esc(k.name)} recipes yet. <a href="#share" id="shareHere">Share the first one.</a></div>`}</div>`;
-  view.querySelectorAll(".chip[data-region]").forEach(b => b.addEventListener("click", () => { state.region = b.dataset.region; renderKitchen(key); }));
   view.querySelectorAll(".chip[data-course]").forEach(b => b.addEventListener("click", () => { state.course = b.dataset.course; renderKitchen(key); }));
   const sh = document.getElementById("shareHere");
   if (sh) sh.addEventListener("click", () => { state.preKitchen = key; });
