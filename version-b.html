@@ -302,7 +302,7 @@ footer{border-top:1.5px solid var(--line)}
 #shareBtn{gap:0}
 @media (max-width:440px){.sb-long{display:none}}
 @media (max-width:370px){#topbar{gap:12px 8px}.top .menu-btn{width:40px;height:40px}.brand .logo{height:48px}.top .brand{gap:8px}.top .brand span:last-child{font-size:.72rem}}
-@media (max-width:900px){.top{flex-wrap:wrap;gap:12px 10px}.top .brand{margin-right:auto}.top-search{order:3;flex:1 1 60%;max-width:none;margin:0}#shareBtn{order:4}}
+@media (max-width:900px){.top{flex-wrap:wrap;gap:12px 10px}.top .brand{margin-right:auto}.top-search{order:3;flex:1 1 calc(100% - 200px);max-width:none;margin:0}#shareBtn{order:4}}
 .mh-text{display:flex;flex-direction:column;justify-content:center;gap:18px}
 .mh-text h1{font-size:clamp(2.4rem,6.2vw,4.4rem);line-height:1.02;letter-spacing:-.035em;max-width:9ch}
 .mh-text p{margin:0;color:var(--muted);max-width:38ch;font-size:1.02rem}
@@ -517,8 +517,9 @@ h1,h2,h3,.section-h h3,.mood-pick h1{font-family:var(--display);font-weight:800;
 .brand .logo{display:block;height:66px;width:auto;flex:none}
 /* the bottom of the Dado lettering, the slogan's baseline and the bottom of the search bar and buttons share one line */
 #topbar{align-items:flex-end}
-.top .brand{align-items:flex-end}
-.top .brand span:last-child{line-height:1;margin-bottom:var(--slogan-drop,-.2em)}
+/* slogan centred under the logo */
+#topbar .brand{flex-direction:column;align-items:center;gap:5px}
+.top .brand span:last-child{line-height:1;margin-bottom:var(--slogan-drop,-.2em);white-space:nowrap}
 #shareBtn{white-space:nowrap}
 @media (max-width:640px){.brand .logo{height:54px}}
 .brand span{color:var(--muted)}
