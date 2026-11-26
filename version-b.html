@@ -108,6 +108,10 @@ h1,h2,h3{font-family:var(--display);font-weight:600;letter-spacing:-.02em;text-w
 .keep{margin-top:14px;max-width:65ch;padding:16px 18px;border:1.5px solid var(--line);border-radius:16px;display:grid;gap:6px}
 .keep h4{margin:0;font-size:.76rem;font-weight:600;text-transform:uppercase;letter-spacing:.14em;color:var(--muted)}
 .keep p{margin:0;line-height:1.65}
+.hero-box{margin:0 auto;width:100%;max-width:880px;aspect-ratio:1200/670;border:var(--b-line);border-radius:30px;overflow:hidden;background:var(--art-bg)}
+.hero-box img{display:block;width:100%;height:100%;object-fit:cover}
+@media (max-width:640px){.hero-box{border-radius:24px}}
+.hero-box + .dhead{margin-top:4px}
 .img-note{margin:18px 0 0;max-width:65ch;font-size:.8rem;font-style:italic;line-height:1.5;color:var(--muted)}
 .owner-actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center;font-size:.88rem;color:var(--muted)}
 
@@ -718,6 +722,8 @@ const PHOTOS = {
   "j-tsukemen": {src:"assets/food/j-tsukemen.webp", w:480, h:480, cx:240, cy:240, rx:240, ry:240},
   "m-pastor": {src:"assets/food/m-pastor.webp", w:480, h:480, cx:240, cy:240, rx:240, ry:240}
 };
+/* recipes whose page opens with a wide, boxed photo above the title (cards keep the round crop) */
+const WIDE = new Set(["r-tagliolini-cavolfiore"]);
 function photoImg(p, fill, alt){
   const sx = fill/(2*p.rx), sy = fill/(2*p.ry);
   const st = `width:${(p.w*sx*100).toFixed(2)}%;height:${(p.h*sy*100).toFixed(2)}%;left:${(50-p.cx*sx*100).toFixed(2)}%;top:${(50-p.cy*sy*100).toFixed(2)}%`;
@@ -2068,7 +2074,8 @@ function renderDetail(id){
   view.innerHTML = `
     <a class="btn ghost back" href="#">← All recipes</a>
     <article class="detail">
-      <div class="dhead">${dishArt(r, "hero-art")}<header>
+      ${WIDE.has(r.id) ? `<figure class="hero-box"><img src="assets/food/${r.id}-wide.webp" alt="Photo of ${esc(r.title)}" width="1200" height="670" decoding="async"></figure>` : ""}
+      <div class="dhead">${WIDE.has(r.id) ? "" : dishArt(r, "hero-art")}<header>
         <span class="eyebrow">${esc(r.category)}</span>
         <div class="title-row"><h2>${esc(r.title)}</h2>${heartBtn(r, "fav-lg")}</div>
         <p class="lede">${esc(r.summary)}</p>
