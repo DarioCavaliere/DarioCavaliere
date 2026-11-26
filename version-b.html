@@ -575,6 +575,7 @@ main .look-grid{grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:18
 .chip[aria-pressed="true"],.mchip[aria-pressed="true"]{background:#161616;color:#fff;box-shadow:none}
 .mchip svg{border-radius:50%}
 .mchip.kchip{background-image:none;box-shadow:none;border:var(--b-line);font-weight:600}
+.mchip.meal-chip{padding:9px 20px}
 .mchip.kchip:hover{box-shadow:3px 3px 0 #161616}
 .mchip.kchip[aria-pressed="true"]{background-color:#161616!important;color:#fff;box-shadow:none}
 .fav{background:#fff;border:var(--b-line);box-shadow:none;color:#161616}
@@ -1682,7 +1683,13 @@ const MOODS = [
   {key:"hungry",  label:"Starving",    shape:"square",   color:"#efc898", pos:[62,30,30,10], hint:"big, filling plates",         title:"Big plates for big appetites",   test:r => r.category === "Mains" && r.serves >= 4},
   {key:"quick",   label:"In a rush",   shape:"bolt",     color:"#f5dcb8", pos:[34,28,28,-4], hint:"ready in 25 minutes or less", title:"Ready in 25 minutes or less",    test:r => r.time > 0 && r.time <= 25},
   {key:"sweet",   label:"Sweet tooth", shape:"round",    color:"#e3a3e8", pos:[0,44,30,4],  hint:"desserts and bakes",           title:"Desserts and bakes",             test:r => r.category === "Desserts" || r.category === "Baking"},
-  {key:"fresh",   label:"Fresh",       shape:"blob",     color:"#a9b8f0", pos:[22,62,34,-8], hint:"light, bright and herby",     title:"Light, bright and fresh",        test:r => r.category === "Salads" || /\b(lime|lemon|mint|cucumber|papaya)\b/i.test((r.ingredients||[]).join(" "))}
+  {key:"healthy",   label:"Healthy",       shape:"blob",     color:"#a9b8f0", pos:[22,62,34,-8], hint:"light and nourishing",     title:"Light and healthy",        test:r => r.healthy || r.category === "Salads" || (r.category !== "Desserts" && r.category !== "Baking" && kcal(r) > 0 && kcal(r) <= 450)}
+];
+/* meal of the day: a row of plain chips under the moods, filtering the same way */
+const MEALS = [
+  {key:"breakfast", label:"Breakfast", title:"For breakfast", test:r => r.category === "Breakfast" || /shakshuka|chilaquiles|pancake|frittata|banana bread/i.test(r.title || "")},
+  {key:"lunch",     label:"Lunch",     title:"For lunch",     test:r => ["Salads", "Soups", "Starters"].includes(r.category) || (r.category === "Mains" && Number(r.time) > 0 && r.time <= 30) || /wrap|bowl|tacos|puccia|arayes|meal prep|panzanella|torta salata/i.test(r.title || "")},
+  {key:"dinner",    label:"Dinner",    title:"For dinner",    test:r => r.category === "Mains"}
 ];
 const QUIZ = [
   {key:"over30",  title:"Worth the wait: over 30 minutes", test:r => r.time > 30},
@@ -1716,7 +1723,7 @@ function renderHome(){
     : "";
   const kSel = state.mood && state.mood.startsWith("k:") ? kitchenOf(state.mood.slice(2)) : null;
   const moodSel = kSel ? {key: state.mood, title: `${kSel.name} kitchen`, kitchen: kSel.key, test: r => r.cuisine === kSel.key}
-    : state.mood ? [...MOODS, ...QUIZ].find(m => m.key === state.mood) : null;
+    : state.mood ? [...MOODS, ...MEALS, ...QUIZ].find(m => m.key === state.mood) : null;
   const all = allRecipes(), moodList = moodSel ? all.filter(moodSel.test) : [];
   const timed = all.filter(r => Number(r.time) > 0).sort((a,b) => a.time - b.time), quickest = timed[0];
   const catCounts = CATS.slice(1).map(c => all.filter(r => r.category === c).length), maxCat = Math.max(1, ...catCounts);
@@ -1750,6 +1757,7 @@ function renderHome(){
         <span class="eyebrow-s">${esc(today)}</span>
         <h1><span class="hello" role="button" tabindex="0" aria-label="Hello! Tap to change its colour">Hello!</span> What are you in the mood for today?</h1>
         <div class="mood-chips" role="group" aria-label="Food mood">${MOODS.map(m => `<button class="mchip" type="button" data-mood="${m.key}" aria-pressed="${state.mood === m.key}">${faceSVG(m.shape, m.color)}<span>${m.label}</span></button>`).join("")}</div>
+        <div class="mood-chips meal-chips" role="group" aria-label="Meal">${MEALS.map(m => `<button class="mchip meal-chip" type="button" data-mood="${m.key}" aria-pressed="${state.mood === m.key}">${m.label}</button>`).join("")}</div>
         <div class="mood-chips kitchen-chips" role="group" aria-label="Kitchen">${KITCHENS.map(k => `<button class="mchip kchip" type="button" data-mood="k:${k.key}" aria-pressed="${state.mood === "k:" + k.key}" style="background-color:var(${kitchenColor(k.key)})">${esc(k.name)}</button>`).join("")}</div>
       </section>
     </section>
