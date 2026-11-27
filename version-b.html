@@ -608,7 +608,7 @@ main .look-grid{grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:18
 /* ===== shopping list (Dado style: outlined cream panels, candy section dots, chunky type) ===== */
 #listBtn{position:relative;background:var(--b-orange);color:#161616;text-decoration:none}
 .list-badge{position:absolute;top:-6px;right:-6px;min-width:22px;height:22px;padding:0 6px;border-radius:999px;background:#161616;color:#fff;border:2px solid var(--b-white);font:700 .7rem/18px var(--body);text-align:center}
-.sl{display:grid;gap:18px;padding-top:12px}
+.sl{display:grid;grid-template-columns:minmax(0,1fr);gap:18px;padding-top:12px}
 .sl-head{display:grid;gap:10px;max-width:720px}
 .sl-head h2{font-size:clamp(2rem,5vw,3rem)}
 .sl-head .lede{margin:0;font-size:1.05rem;color:var(--ink);opacity:.85}
@@ -675,7 +675,7 @@ main .look-grid{grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:18
 .sl-item.done .sl-q{text-decoration:line-through}
 @media (max-width:420px){.sl-pm{width:28px;height:28px}.sl-q{font-size:.78rem}}
 .sl-add{display:flex;gap:10px;margin-top:16px}
-.sl-add input{flex:1;min-width:0;padding:12px 16px;border:var(--b-line);border-radius:999px;background:#fff;font-size:1rem;color:#161616}
+.sl-add input{flex:1;min-width:0;width:0;padding:12px 16px;border:var(--b-line);border-radius:999px;background:#fff;font-size:1rem;color:#161616}
 .sl-donepanel{background:#f1ede6}
 .sl-empty{margin-top:10px}
 .sl-reset{margin:0;text-align:center;color:var(--ink)}
@@ -707,6 +707,62 @@ main .look-grid{grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:18
 .mk-basket .mk-nm,.mk-basket .mk-q{text-decoration:line-through;color:#6b6475;font-size:1.1rem}
 .mk-basket .mk-row{min-height:56px}
 .mk-all{--ink:#161616;color:#161616;background:var(--b-white);border:var(--b-line);border-radius:28px;padding:28px;text-align:center;font-size:1.2rem;font-weight:600}
+/* share buttons beside the hearts */
+.card-wrap .fav.share{top:62px}
+.fav.share svg{fill:none;stroke:currentColor}
+.fav.share:hover{background:var(--b-lime)}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translate(-50%,20px);z-index:90;max-width:min(92vw,520px);background:#161616;color:#fff;border-radius:999px;padding:12px 20px;font-weight:600;font-size:.92rem;text-align:center;opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;overflow-wrap:anywhere}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+/* top bar: everything on the right as tall as the search pill (desktop) */
+@media (min-width:901px){#topbar .menu-btn{width:51px;height:51px}#topbar #shareBtn{height:51px;padding-block:0;display:inline-flex;align-items:center}#topbar .menu-btn svg{width:22px;height:22px}}
+/* what's in your kitchen */
+.kt-home{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr);gap:20px;align-items:center;margin-top:16px;background:var(--b-pink);border:var(--b-line);border-radius:36px;padding:clamp(20px,4vw,36px);--ink:#161616;--muted:#3b3346;color:#161616}
+@media (max-width:820px){.kt-home{grid-template-columns:minmax(0,1fr)}}
+.kt-intro{display:grid;gap:10px}
+.kt-intro h2{font-family:var(--display);font-weight:800;font-size:clamp(1.7rem,4vw,2.5rem);line-height:1.08}
+.kt-intro p{margin:0;font-size:1rem}
+.kt-panel{--ink:#161616;color:#161616;background:var(--b-white);border:var(--b-line);border-radius:28px;padding:18px;display:grid;grid-template-columns:minmax(0,1fr);gap:12px}
+.kt-panel.kt-wide{border-radius:30px;padding:22px}
+.kt-row{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.kt-row h3{font-family:var(--display);font-weight:800;font-size:1.05rem;margin:0}
+.kt-n{font-size:.85rem;color:#3b3346}
+.kt-chips{display:flex;flex-wrap:wrap;gap:8px}
+.kt-chip{display:inline-flex;align-items:center;gap:6px;background:var(--c);border:2px solid #161616;border-radius:999px;padding:5px 6px 5px 14px;font-weight:600;font-size:.92rem}
+.kt-chip button{width:24px;height:24px;border-radius:50%;border:0;background:rgba(255,255,255,.65);display:grid;place-items:center;cursor:pointer;padding:0;color:#161616}
+.kt-chip button svg{width:13px;height:13px}
+.kt-add{display:flex;align-items:center;gap:10px;border:var(--b-line);border-radius:999px;background:#fff;padding:0 16px}
+.kt-add span{font-size:1.3rem;font-weight:600}
+.kt-add input{flex:1;min-width:0;width:0;border:0;background:none;padding:13px 0;font-size:1rem;color:#161616;outline:none}
+.kt-add:focus-within{box-shadow:3px 3px 0 #161616}
+.kt-sugg{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+.kt-sugg>span{font-size:.82rem;color:#3b3346;margin-right:2px}
+.kt-sugg .kt-q{padding:5px 12px;font-size:.82rem}
+.kt-go:empty{display:none}
+.kt-find{width:100%;justify-content:center;font-size:1.05rem;padding:14px 20px}
+.kt{display:grid;grid-template-columns:minmax(0,1fr);gap:18px;padding-top:12px}
+.kt-summary{display:flex;flex-wrap:wrap;gap:10px}
+.kt-summary span{background:var(--b-white);border:var(--b-line);border-radius:999px;padding:8px 16px;font-weight:600;color:#161616}
+.kt-summary b{font-family:var(--display);font-weight:800;margin-right:4px}
+.kt-group{display:grid;gap:12px;margin-top:10px}
+.kt-gh{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.kt-gh h3{font-family:var(--display);font-weight:800;font-size:clamp(1.15rem,2.4vw,1.5rem);margin:0}
+.kt-gh p{margin:4px 0 0;color:var(--ink);opacity:.85}
+.kt-best{background:var(--b-lime);border:2px solid #161616;border-radius:999px;padding:4px 12px;font-weight:600;font-size:.82rem;color:#161616;white-space:nowrap}
+.kt-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:16px}
+.kt-card{--ink:#161616;color:#161616;background:var(--b-white);border:var(--b-line);border-radius:30px;overflow:hidden;display:flex;flex-direction:column;transition:transform .2s,box-shadow .2s}
+.kt-card:hover{transform:translate(-3px,-3px);box-shadow:6px 6px 0 #161616}
+.kt-img{display:block;aspect-ratio:1200/670;border-bottom:var(--b-line);overflow:hidden}
+.kt-img img{display:block;width:100%;height:100%;object-fit:cover}
+.kt-img .ph-tag{display:none}
+.kt-body{padding:14px 16px 16px;display:grid;gap:6px;justify-items:start}
+.kt-t{font-family:var(--display);font-weight:700;font-size:1rem;line-height:1.25;text-decoration:none}
+.kt-badge{border:2px solid #161616;border-radius:999px;padding:2px 10px;font-weight:600;font-size:.8rem}
+.kt-badge.ready{background:var(--b-lime)}.kt-badge.almost{background:var(--b-orange)}.kt-badge.insp{background:#fff}
+.kt-meta{margin:0;font-size:.86rem;color:#3b3346}
+.kt-miss{margin:0;font-size:.86rem;color:#3b3346}
+.kt-miss.ok{color:#161616;font-weight:600}
+.kt-addmiss{padding:7px 14px;font-size:.84rem;margin-top:4px}
+.kt-addmiss[disabled]{opacity:1;background:var(--b-lime)}
 footer{color:var(--ink)}
 [hidden]{display:none!important}
 .b-badge{position:fixed;left:14px;bottom:14px;z-index:60;background:#161616;color:#fff;border-radius:999px;padding:7px 14px;font:600 .78rem var(--body)}
@@ -1784,7 +1840,7 @@ document.getElementById("legend").innerHTML = `<span class="tchip">${TRAIT_ICON.
 const recipeHref = r => (window.DADO_URLS && r.house && window.DADO_URLS[r.id]) || "#r-" + esc(r.id);
 function cardHTML(r){
   const k = kitchenOf(r.cuisine);
-  return `<div class="card-wrap">${heartBtn(r)}<a class="card" href="${recipeHref(r)}">
+  return `<div class="card-wrap">${heartBtn(r)}${shareBtn(r)}<a class="card" href="${recipeHref(r)}">
       <div class="card-head">${dishArt(r, "thumb")}<div class="ch-text"><span class="eyebrow">${r.special ? "Winter special · " : ""}${esc(COURSES[r.course] || r.category)}${k ? " · " + esc(k.name) : ""}${r.diet ? " · " + esc(r.diet) : ""}${r.twist ? " · Modern twist" : ""}</span>
       <h3>${esc(r.title)}</h3>${traitIcons(r)}</div></div>
       <p>${esc(r.summary)}</p>
@@ -1916,7 +1972,9 @@ function renderHome(){
       <section class="mood-results">
         <div class="section-h"><h3>Results for “${esc(state.q.trim())}”</h3><span>${results.length} dish${results.length === 1 ? "" : "es"} · <button class="linkish" type="button" id="clearQ">Clear search</button></span></div>
         <div class="grid">${results.length ? results.map(cardHTML).join("") : `<div class="empty">Nothing matches that yet. Try an ingredient, like lentils, or <a href="#share">share a recipe</a>.</div>`}</div>
+        <div class="look-actions"><a class="btn" href="#fridge" id="kitFromQ">Cook with what's in your kitchen →</a></div>
       </section>`;
+    document.getElementById("kitFromQ").onclick = () => { kitAdd(state.q); savePrefs(); };
     document.getElementById("clearQ").onclick = () => { state.q = ""; document.getElementById("q").value = ""; renderHome(); };
     return;
   }
@@ -1949,6 +2007,7 @@ function renderHome(){
       ${timerTileHTML()}
     </section>
     <section id="timeResults" class="mood-results"></section>
+    ${kitHomeHTML()}
     <div class="section-h"><h3>Chef's picks</h3><span>A fresh mix from every kitchen on each visit</span></div>
     <div class="grid">${picksShown.map(cardHTML).join("")}</div>
     <div class="look-actions">${cols * pickRows < all.length ? `<button class="btn" type="button" id="morePicks">See more +</button>` : ""}<button class="btn" type="button" id="shufflePicks">Shuffle picks</button></div>
@@ -1966,6 +2025,7 @@ function renderHome(){
   const sa = document.getElementById("showAll"); if (sa) sa.onclick = () => { state.showAll = true; renderHome(); };
   const mp = document.getElementById("morePicks"); if (mp) mp.onclick = () => { state.picksRows = pickRows + 2; renderHome(); };
   document.getElementById("shufflePicks").onclick = () => { state.picks = null; state.picksRows = 1; renderHome(); };
+  kitWire();
   view.querySelectorAll(".chip").forEach(b => b.addEventListener("click", () => { state.cat = b.dataset.cat; renderHome(); }));
   view.querySelectorAll("[data-mood]").forEach(b => b.addEventListener("click", () => {
     state.mood = state.mood === b.dataset.mood ? null : b.dataset.mood;
@@ -2153,7 +2213,7 @@ const SL_UNIT_NORM = {kg:["g",1000], g:["g",1], ml:["ml",1], l:["ml",1000]};
 function slParse(line){
   let value = null, unit = "", rest = String(line || "");
   const q = parseQty(rest);
-  if (q){ value = q.value; rest = q.rest; }
+  if (q){ value = q.value; rest = q.rest.replace(/^\s*(small|large|big|generous|heaped|level|good)\s+(?=(handful|pinch|bunch|clove|sprig|tbsp|tsp|can|tin|slice)s?\b)/i, " "); }
   const m = rest.match(SL_UNITS);
   if (m && value !== null){
     const u = m[1].toLowerCase(), after = rest.slice(m[0].length);
@@ -2401,17 +2461,155 @@ function renderMarket(){
   slWire();
   slKeepAwake(true);
 }
+/* ---------- share a recipe: copies a link straight to it ---------- */
+const DADO_LINK = location.hostname.endsWith("claude.ai") ? location.href.split("#")[0] : "https://claude.ai/artifact/X3AAwoF2R3txPAbgE6kZjL";
+const recipeLink = r => DADO_LINK + "#r-" + encodeURIComponent(r.id);
+const SHARE_ICON = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3.5M7.5 8 12 3.5 16.5 8"/><path d="M5 12.5v6A2 2 0 0 0 7 20.5h10a2 2 0 0 0 2-2v-6"/></svg>`;
+function shareBtn(r, cls = ""){ return `<button class="fav share ${cls}" type="button" data-sharelink="${esc(r.id)}" aria-label="Copy a link to ${esc(r.title)}">${SHARE_ICON}</button>`; }
+let toastT = 0;
+function toast(msg){
+  let t = document.getElementById("toast");
+  if (!t){ t = document.createElement("div"); t.id = "toast"; t.className = "toast"; t.setAttribute("role", "status"); document.body.appendChild(t); }
+  t.textContent = msg; t.classList.add("on"); clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove("on"), 2400);
+}
+async function copyText(text){
+  try { await navigator.clipboard.writeText(text); return true; } catch {}
+  try { const a = document.createElement("textarea"); a.value = text; a.setAttribute("readonly", ""); a.style.cssText = "position:fixed;left:-9999px;top:0"; document.body.appendChild(a); a.select(); const ok = document.execCommand("copy"); a.remove(); return ok; } catch { return false; }
+}
+document.addEventListener("click", async e => {
+  const b = e.target.closest("[data-sharelink]"); if (!b) return;
+  e.preventDefault(); e.stopPropagation();
+  const r = allRecipes().find(x => x.id === b.dataset.sharelink); if (!r) return;
+  const url = recipeLink(r);
+  if (await copyText(url)){ toast("Link copied. Paste it anywhere to share " + r.title + "."); try { haptic(false); } catch {} }
+  else toast("Couldn't copy automatically. The link is " + url);
+});
+
+/* ---------- what's in your kitchen: type what you have, see what you can cook ---------- */
+prefs.kitchen = [];
+const KIT_SUGGEST = ["Eggs", "Tomatoes", "Pasta", "Rice", "Onion", "Garlic", "Chicken", "Potatoes", "Lemon", "Parmesan", "Mozzarella", "Chickpeas", "Spinach", "Courgette", "Basil"];
+/* one word you type can stand for several things a recipe might call it */
+const KIT_SYN = {
+  pasta: ["pasta","spaghetti","penne","rigatoni","linguine","bucatini","tagliatelle","tagliolini","trofie","orecchiette","ditalini","macaroni","lasagne","fusilli","gnocchetti","cavatelli","tonnarelli","paccheri","farfalle"],
+  noodle: ["noodle","ramen","soba","udon"],
+  cheese: ["cheese","mozzarella","parmigiano","parmesan","pecorino","ricotta","feta","brie","scamorza","mascarpone","paneer","burrata","stracciatella","provola","cheddar","queso","caciocavallo"],
+  parmesan: ["parmesan","parmigiano"], parmigiano: ["parmigiano","parmesan"],
+  courgette: ["courgette","zucchin"], zucchini: ["zucchin","courgette"], aubergine: ["aubergine","eggplant","melanzan"], eggplant: ["eggplant","aubergine"],
+  coriander: ["coriander","cilantro"], cilantro: ["cilantro","coriander"], chili: ["chili","chilli","chile"], chilli: ["chilli","chili"],
+  egg: ["egg","yolk"], beef: ["beef"], mince: ["mince"], rice: ["rice","risotto","basmati","arborio","carnaroli"],
+  tomato: ["tomato","passata","pomodor"], potato: ["potato"], bread: ["bread","pita","baguette","sourdough","ciabatta","breadcrumb"],
+  cream: ["cream"], yogurt: ["yogurt","yoghurt"], yoghurt: ["yoghurt","yogurt"], prawn: ["prawn","shrimp"], shrimp: ["shrimp","prawn"],
+  pepper: ["bell pepper","red pepper","yellow pepper","green pepper","mixed pepper","peppers","peperon"], herb: ["basil","parsley","mint","coriander","dill","rosemary","thyme","sage","oregano","chive"]
+};
+const kitStaple = name => { const n = name.toLowerCase(); return /\bsalt\b|black pepper|white pepper|ground pepper|^pepper$|\boil\b|^water$|ice cubes?|^ice$/.test(n); };
+const kitEsc = s => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+function kitTerms(){
+  return prefs.kitchen.map(t => {
+    const k = slKey(t);
+    const words = KIT_SYN[k] || KIT_SYN[k.replace(/s$/, "")] || [k];
+    return {label: t, rx: new RegExp("\\b(" + words.map(kitEsc).join("|") + ")", "i")};
+  });
+}
+/* how well each recipe fits: core ingredients (salt, pepper and oils are assumed) you have vs. those you'd still need */
+function kitMatches(){
+  const terms = kitTerms(); if (!terms.length) return [];
+  const out = [];
+  for (const r of allRecipes()){
+    const core = [], seen = new Set();
+    for (const line of r.ingredients || []){ const p = slParse(line); if (!p.name || kitStaple(p.name) || seen.has(p.key)) continue; seen.add(p.key); core.push(p); }
+    if (!core.length) continue;
+    const have = [], miss = [];
+    for (const p of core) (terms.some(t => t.rx.test(p.name)) ? have : miss).push(p);
+    if (!have.length) continue;
+    out.push({r, have, miss, pct: Math.round(have.length / core.length * 100)});
+  }
+  return out.sort((a, b) => a.miss.length - b.miss.length || b.pct - a.pct || a.r.time - b.r.time);
+}
+function kitChips(){
+  return prefs.kitchen.map((t, i) => { const s = SL_SECTIONS.find(x => x.key === slSection(t)) || SL_SECTIONS[6]; return `<span class="kt-chip" style="--c:${s.color}">${esc(t)}<button type="button" data-kitdel="${i}" aria-label="Remove ${esc(t)}">${SL_ICON.x}</button></span>`; }).join("");
+}
+function kitPanelHTML(big){
+  const sugg = KIT_SUGGEST.filter(s => !prefs.kitchen.some(k => slKey(k) === slKey(s))).slice(0, big ? 10 : 7);
+  return `<div class="kt-panel${big ? " kt-wide" : ""}">
+      <div class="kt-row"><h3>Your ingredients</h3><span class="kt-n">${prefs.kitchen.length ? prefs.kitchen.length + " added" : "Nothing yet"}</span></div>
+      ${prefs.kitchen.length ? `<div class="kt-chips">${kitChips()}</div>` : ""}
+      <form class="kt-add" data-kitform autocomplete="off"><span aria-hidden="true">+</span><input data-kitin maxlength="40" placeholder="Add an ingredient, e.g. eggs" aria-label="Add an ingredient"></form>
+      ${sugg.length ? `<div class="kt-sugg"><span>Quick add:</span>${sugg.map(s => `<button type="button" class="btn kt-q" data-kitadd="${esc(s)}">+ ${esc(s)}</button>`).join("")}</div>` : ""}
+      <div class="kt-go">${big ? (prefs.kitchen.length ? `<button class="linkish" type="button" data-kitclear>Clear all</button>` : "") : `<a class="btn primary kt-find" href="#fridge">Find my recipes →</a>`}</div>
+    </div>`;
+}
+function kitHomeHTML(){
+  const m = prefs.kitchen.length ? kitMatches() : [], ready = m.filter(x => !x.miss.length).length;
+  return `<section class="kt-home" id="kitchenHome">
+      <div class="kt-intro"><span class="eyebrow-s">Cook with what you have</span><h2>What's in your kitchen?</h2><p>Tell us what you've got. We'll find something delicious to make${prefs.kitchen.length ? ` <b>· ${ready} ready to cook, ${m.length} with some of it</b>` : ""}.</p></div>
+      ${kitPanelHTML(false)}
+    </section>`;
+}
+function kitCard(x, tone){
+  const r = x.r;
+  return `<article class="kt-card">
+      <a class="kt-img" href="${recipeHref(r)}" aria-label="Open ${esc(r.title)}">${boxInner(r, "")}</a>
+      <div class="kt-body">
+        <a class="kt-t" href="${recipeHref(r)}">${esc(r.title)}</a>
+        <span class="kt-badge ${tone}">${x.pct}% ingredients</span>
+        <p class="kt-meta">${esc(fmtTime(r.time))} · serves ${esc(r.serves)}</p>
+        ${x.miss.length ? `<p class="kt-miss">Missing: ${x.miss.map(p => esc(p.name.toLowerCase())).join(", ")}</p><button class="btn kt-addmiss" type="button" data-addmiss="${esc(r.id)}">+ Add missing to list</button>` : `<p class="kt-miss ok">You have everything.</p>`}
+      </div>
+    </article>`;
+}
+function kitGroup(title, sub, badge, tone, list, limit){
+  if (!list.length) return "";
+  return `<section class="kt-group"><div class="kt-gh"><div><h3>${esc(title)}</h3><p>${esc(sub)}</p></div>${badge ? `<span class="kt-best">${esc(badge)}</span>` : ""}</div>
+      <div class="kt-grid">${list.slice(0, limit).map(x => kitCard(x, tone)).join("")}</div></section>`;
+}
+function renderFridge(){
+  const m = kitMatches(), ready = m.filter(x => !x.miss.length), almost = m.filter(x => x.miss.length && x.miss.length <= 2), insp = m.filter(x => x.miss.length > 2).sort((a, b) => b.pct - a.pct);
+  view.innerHTML = `
+    <a class="btn ghost back" href="#">← All recipes</a>
+    <section class="kt">
+      <header class="sl-head"><span class="eyebrow">Cook something delicious</span><h2>What's in your kitchen?</h2><p class="lede">Tell us what ingredients you have. We'll find something delicious to make. Salt, pepper and oil are taken as given.</p></header>
+      ${kitPanelHTML(true)}
+      ${!prefs.kitchen.length ? `<div class="empty">Add a few ingredients above, or tap a quick add, to see what you can cook.</div>`
+        : !m.length ? `<div class="empty">Nothing uses those yet. Try adding a staple like eggs, onion or pasta.</div>`
+        : `<div class="kt-summary"><span><b>${ready.length}</b> ready to cook</span><span><b>${almost.length}</b> almost there</span><span><b>${insp.length}</b> to get inspired</span></div>`
+          + kitGroup("Ready to cook", "You have everything required.", "Best matches", "ready", ready, 24)
+          + kitGroup("Almost there", "Recipes that need only one or two more ingredients.", "", "almost", almost, 24)
+          + kitGroup("Get inspired", "Recipes that use some of your ingredients but need a few more.", "", "insp", insp, 12)}
+    </section>`;
+  kitWire();
+}
+function kitRefresh(){ savePrefs(); if (location.hash === "#fridge") renderFridge(); else { const h = document.getElementById("kitchenHome"); if (h){ h.outerHTML = kitHomeHTML(); kitWire(); } } }
+function kitAdd(text){
+  text = String(text || "").trim().replace(/\s+/g, " "); if (!text) return;
+  for (const part of text.split(/\s*,\s*/)){
+    const t = part.charAt(0).toUpperCase() + part.slice(1);
+    if (t && !prefs.kitchen.some(k => slKey(k) === slKey(t)) && prefs.kitchen.length < 40) prefs.kitchen.push(t);
+  }
+}
+function kitWire(){
+  document.querySelectorAll("[data-kitform]").forEach(f => f.onsubmit = e => { e.preventDefault(); const i = f.querySelector("[data-kitin]"); kitAdd(i.value); kitRefresh(); const n = document.querySelector("[data-kitin]"); if (n) n.focus(); });
+  document.querySelectorAll("[data-kitadd]").forEach(b => b.onclick = () => { kitAdd(b.dataset.kitadd); kitRefresh(); });
+  document.querySelectorAll("[data-kitdel]").forEach(b => b.onclick = () => { prefs.kitchen.splice(+b.dataset.kitdel, 1); kitRefresh(); });
+  document.querySelectorAll("[data-kitclear]").forEach(b => b.onclick = () => { prefs.kitchen = []; kitRefresh(); });
+  document.querySelectorAll("[data-addmiss]").forEach(b => b.onclick = () => {
+    const x = kitMatches().find(m => m.r.id === b.dataset.addmiss); if (!x) return;
+    const have = new Set(slItems().map(i => i.key));
+    let n = 0; for (const p of x.miss) if (!have.has(p.key)){ prefs.list.extras.push({id: Date.now().toString(36) + n, text: p.name}); n++; }
+    slSave(); b.textContent = n ? `Added ${n} to your list ✓` : "Already in your list ✓"; b.disabled = true; try { haptic(false); } catch {}
+  });
+}
 
 function applyPrefs(p){
   prefs.favs = new Set(Array.isArray(p.favs) ? p.favs.filter(x => typeof x === "string") : []);
   prefs.searches = Array.isArray(p.searches) ? p.searches.filter(x => typeof x === "string").slice(0, 8) : [];
   if (p.list) prefs.list = slSanitize(p.list);
+  if (Array.isArray(p.kitchen)) prefs.kitchen = p.kitchen.filter(x => typeof x === "string" && x.trim()).map(x => x.slice(0, 40)).slice(0, 40);
   refreshFavUI(); renderMenu(); slBadge();
   if (location.hash === "#list" && !document.activeElement?.closest?.(".sl-picker,.sl-add")) renderList();
 }
 function loadLocalPrefs(){ try { applyPrefs(JSON.parse(localStorage.getItem("dado-prefs") || "{}")); } catch {} }
 function savePrefs(){
-  const body = {favs: [...prefs.favs], searches: prefs.searches, list: prefs.list};
+  const body = {favs: [...prefs.favs], searches: prefs.searches, list: prefs.list, kitchen: prefs.kitchen};
   try { localStorage.setItem("dado-prefs", JSON.stringify(body)); } catch {}
   if (!prefsRef || prefsLocalOnly) return;
   clearTimeout(prefsSaveT);
@@ -2615,7 +2813,7 @@ function renderDetail(id){
       <figure class="hero-box">${boxInner(r, "Photo of " + r.title)}</figure>
       <div class="dhead"><header>
         <span class="eyebrow">${esc(r.category)}</span>
-        <div class="title-row"><h2>${esc(r.title)}</h2>${heartBtn(r, "fav-lg")}</div>
+        <div class="title-row"><h2>${esc(r.title)}</h2>${shareBtn(r, "fav-lg")}${heartBtn(r, "fav-lg")}</div>
         <p class="lede">${esc(r.summary)}</p>
         ${traitRow(r)}
         <div class="facts"><span>Time <b>${esc(fmtTime(r.time))}</b></span><span>Serves <b>${esc(r.serves)}</b></span>${COURSES[r.course] ? `<span>Course <b style="font-family:var(--body)">${COURSES[r.course]}</b></span>` : ""}${r.diet ? `<span>Diet <b style="font-family:var(--body)">${esc(r.diet)}</b></span>` : ""}${kitchenOf(r.cuisine) ? `<span>Kitchen <a href="#k-${r.cuisine}"><b style="font-family:var(--body)">${esc(kitchenOf(r.cuisine).name)}</b></a></span>` : ""}${kcal(r) ? `<span>Calories <b>≈ ${kcal(r)} kcal</b> per serving</span>` : ""}${r.house ? "" : `<span>Shared by <b style="font-family:var(--body)">${esc(authorName(r))}</b></span>`}</div>
@@ -2818,6 +3016,7 @@ function route(){
   if (typeof Hero !== "undefined") Hero.hide(); /* the marble lazy-susan hero is kept in the code but switched off in this style */
   if (h === "list") { renderList(); window.scrollTo(0, 0); }
   else if (h === "shop") { renderMarket(); window.scrollTo(0, 0); }
+  else if (h === "fridge") { renderFridge(); window.scrollTo(0, 0); }
   else if (h === "share") renderShare();
   else if (h === "look") renderLook();
   else if (h === "saved") renderSaved();
@@ -2997,7 +3196,7 @@ async function resolveNames(){
       let first = true;
       prefsRef.onSnapshot(s => {
         if (s.exists) applyPrefs(s.data());
-        else if (first && (prefs.favs.size || prefs.searches.length || prefs.list.recipes.length || prefs.list.extras.length)) savePrefs();
+        else if (first && (prefs.favs.size || prefs.searches.length || prefs.list.recipes.length || prefs.list.extras.length || prefs.kitchen.length)) savePrefs();
         first = false;
         if (location.hash === "#saved") renderSaved();
       }, () => { prefsLocalOnly = true; });
