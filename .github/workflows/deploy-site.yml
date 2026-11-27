@@ -1,0 +1,44 @@
+# Publishes the Dado website to GitHub Pages. Runs only when started by hand
+# (Actions tab -> "Deploy Dado website" -> Run workflow), so nothing goes live by accident.
+# The domain comes from site/site.config.json, or from the repository variable SITE_URL if set.
+name: Deploy Dado website
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+concurrency:
+  group: pages
+  cancel-in-progress: false
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install pillow==11.0.0
+      - name: Build pages
+        run: node site/tools/build.mjs
+        env:
+          SITE_URL: ${{ vars.SITE_URL }}
+      - name: Build images and icons
+        run: python3 site/tools/make-images.py site/dist
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site/dist
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

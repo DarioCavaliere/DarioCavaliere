@@ -14,3 +14,7 @@ Each page is a single self-contained HTML file. Open it in a browser to view it.
 - The main version stores shared recipes, sign-in and photo uploads through the Claude Artifact runtime (`window.claude`). Those features only work on the published artifact. Opened as a local file, the page still shows the built-in recipes.
 - To update the live pages, ask Claude to republish `index.html` (or `version-b.html`) to the artifact links above.
 - Work in progress lives on the branch `claude/exciting-sagan-owdanl`.
+
+## Public website (not live yet)
+
+`site/` builds a public, search-friendly version of Dado: one page per recipe with Schema.org Recipe data, social previews, a sitemap and icons, plus the app at `/`. See [`site/LAUNCH.md`](site/LAUNCH.md) for the launch checklist (domain, GitHub Pages, Google Search Console).

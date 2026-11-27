@@ -765,6 +765,7 @@ main .look-grid{grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:18
 .kt-addmiss{padding:7px 14px;font-size:.84rem;margin-top:4px}
 .kt-addmiss[disabled]{opacity:1;background:var(--b-lime)}
 footer{color:var(--ink)}
+.public #shareBtn,.public .nav-right[href="#share"]{display:none!important}
 [hidden]{display:none!important}
 </style>
 
@@ -800,6 +801,7 @@ footer{color:var(--ink)}
 </div>
 
 <script>
+if (window.DADO_PUBLIC) document.documentElement.classList.add("public");
 /* "Hello!" gets a random colour from the palette on every load: a slightly deeper shade in light mode so it stays readable, the pastel itself in dark mode */
 const HELLO = [["#9572dc", "#c3a3f0"], ["#c98a3e", "#efc898"], ["#bf62c9", "#e3a3e8"], ["#d26f55", "#eea48f"], ["#6a7fdb", "#a9b8f0"], ["#c9637f", "#eba2b8"]];
 let helloIdx = -1;
@@ -1953,7 +1955,7 @@ function renderHome(){
   let status = "";
   if (state.db === "loading") status = "Loading shared recipes…";
   else if (state.db === "slow") status = "Shared recipes can't be reached yet. House recipes are shown below.";
-  else if (state.db === "off") status = "Shared recipes are available when you're signed in to Claude.";
+  else if (state.db === "off") status = window.DADO_PUBLIC ? "" : "Shared recipes are available when you're signed in to Claude.";
   const communityBlock = state.db === "ready" || state.community.length
     ? (community.length ? community.map(card).join("")
        : `<div class="empty">${state.community.length ? "No shared recipes match that search." : "No one has shared a recipe yet. <a href=\"#share\">Be the first.</a>"}</div>`)
@@ -2462,7 +2464,8 @@ function renderMarket(){
 }
 /* ---------- share a recipe: copies a link straight to it ---------- */
 const DADO_LINK = location.hostname.endsWith("claude.ai") ? location.href.split("#")[0] : "https://claude.ai/artifact/VhynFGdjLtdh9WqmLsCivD";
-const recipeLink = r => DADO_LINK + "#r-" + encodeURIComponent(r.id);
+/* on the public website each recipe has its own page (window.DADO_URLS, written by the site build); here it falls back to the app link */
+const recipeLink = r => (window.DADO_URLS && window.DADO_URLS[r.id]) ? new URL(window.DADO_URLS[r.id], location.href).href : DADO_LINK + "#r-" + encodeURIComponent(r.id);
 const SHARE_ICON = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3.5M7.5 8 12 3.5 16.5 8"/><path d="M5 12.5v6A2 2 0 0 0 7 20.5h10a2 2 0 0 0 2-2v-6"/></svg>`;
 function shareBtn(r, cls = ""){ return `<button class="fav share ${cls}" type="button" data-sharelink="${esc(r.id)}" aria-label="Copy a link to ${esc(r.title)}">${SHARE_ICON}</button>`; }
 let toastT = 0;
@@ -2640,7 +2643,7 @@ function renderMenu(){
   const all = allRecipes(), favList = [...prefs.favs].map(id => all.find(r => r.id === id)).filter(Boolean);
   const acct = me && me.id
     ? `<div class="m-acct"><img src="${esc(me.avatarUrl)}" alt="" width="40" height="40"><div><b>${esc(me.name || "Signed in")}</b><small>Signed in with your Claude account. Your favourites follow you to other devices.</small></div></div>`
-    : `<div class="m-acct"><span class="m-avatar">${ICON.user}</span><div><b>Browsing as a guest</b><small>Sign in to Claude to log in here. Until then, favourites are saved in this browser only.</small></div></div>`;
+    : `<div class="m-acct"><span class="m-avatar">${ICON.user}</span><div><b>${window.DADO_PUBLIC ? "Your kitchen" : "Browsing as a guest"}</b><small>${window.DADO_PUBLIC ? "Favourites, your shopping list and your ingredients are saved in this browser." : "Sign in to Claude to log in here. Until then, favourites are saved in this browser only."}</small></div></div>`;
   menuPanel.innerHTML = `
     <section class="m-sec"><h2 class="m-h">Account</h2>${acct}</section>
     <section class="m-sec"><div class="m-row"><h2 class="m-h">Favourites</h2><span class="m-count">${favList.length}</span></div>
@@ -2670,7 +2673,7 @@ function renderSaved(){
     <section class="look-intro">
       <span class="eyebrow">Favourites</span>
       <h2>Your saved recipes</h2>
-      <p>${me && me.id ? "Saved to your account, so they follow you to other devices." : "Saved in this browser. Sign in to Claude to keep them on every device."}</p>
+      <p>${me && me.id ? "Saved to your account, so they follow you to other devices." : (window.DADO_PUBLIC ? "Saved in this browser." : "Saved in this browser. Sign in to Claude to keep them on every device.")}</p>
     </section>
     <div class="grid">${list.length ? list.map(cardHTML).join("") : `<div class="empty">Nothing saved yet. Tap the heart on any recipe to keep it here.</div>`}</div>`;
   window.scrollTo(0, 0);
@@ -2875,6 +2878,7 @@ function renderDetail(id){
 }
 
 function renderShare(){
+  if (window.DADO_PUBLIC){ location.replace("#"); return; }
   const ready = db && state.uid && state.canWrite;
   const reason = !db || state.db === "off" ? "Sign in to Claude to share a recipe. You can still browse everything here."
     : !state.uid ? "Your account can browse recipes but can't share them on this page."
