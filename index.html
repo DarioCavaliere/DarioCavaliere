@@ -742,6 +742,7 @@ main .look-grid{grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:18
 .kt{display:grid;grid-template-columns:minmax(0,1fr);gap:18px;padding-top:12px}
 .kt-summary{display:flex;flex-wrap:wrap;gap:10px}
 .kt-summary span{background:var(--b-white);border:var(--b-line);border-radius:999px;padding:8px 16px;font-weight:600;color:#161616}
+.kt-summary .kt-almost{background:var(--b-orange)}
 .kt-summary b{font-family:var(--display);font-weight:800;margin-right:4px}
 .kt-group{display:grid;gap:12px;margin-top:10px}
 .kt-gh{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
@@ -2537,9 +2538,11 @@ function kitPanelHTML(big){
     </div>`;
 }
 function kitHomeHTML(){
-  const m = prefs.kitchen.length ? kitMatches() : [], ready = m.filter(x => !x.miss.length).length;
+  const m = prefs.kitchen.length ? kitMatches() : [], ready = m.filter(x => !x.miss.length).length, almostN = m.filter(x => x.miss.length && x.miss.length <= 2).length;
+  const dishes = n => n + " dish" + (n === 1 ? "" : "es");
+  const status = !prefs.kitchen.length ? "" : ready ? `${ready} ready to cook, ${m.length} with some of it` : almostN ? `Almost there… you can make almost ${dishes(almostN)}` : `${dishes(m.length)} use some of it`;
   return `<section class="kt-home" id="kitchenHome">
-      <div class="kt-intro"><span class="eyebrow-s">Cook with what you have</span><h2>What's in your kitchen?</h2><p>Tell us what you've got. We'll find something delicious to make${prefs.kitchen.length ? ` <b>· ${ready} ready to cook, ${m.length} with some of it</b>` : ""}.</p></div>
+      <div class="kt-intro"><span class="eyebrow-s">Cook with what you have</span><h2>What's in your kitchen?</h2><p>Tell us what you've got. We'll find something delicious to make${status ? ` <b>· ${esc(status)}</b>` : ""}.</p></div>
       ${kitPanelHTML(false)}
     </section>`;
 }
@@ -2569,7 +2572,7 @@ function renderFridge(){
       ${kitPanelHTML(true)}
       ${!prefs.kitchen.length ? `<div class="empty">Add a few ingredients above, or tap a quick add, to see what you can cook.</div>`
         : !m.length ? `<div class="empty">Nothing uses those yet. Try adding a staple like eggs, onion or pasta.</div>`
-        : `<div class="kt-summary"><span><b>${ready.length}</b> ready to cook</span><span><b>${almost.length}</b> almost there</span><span><b>${insp.length}</b> to get inspired</span></div>`
+        : `<div class="kt-summary">${ready.length ? `<span><b>${ready.length}</b> ready to cook</span>${almost.length ? `<span><b>${almost.length}</b> almost there</span>` : ""}` : almost.length ? `<span class="kt-almost">Almost there… you can make almost <b>${almost.length}</b> dish${almost.length === 1 ? "" : "es"}</span>` : ""}${insp.length ? `<span><b>${insp.length}</b> to get inspired</span>` : ""}</div>`
           + kitGroup("Ready to cook", "You have everything required.", "Best matches", "ready", ready, 24)
           + kitGroup("Almost there", "Recipes that need only one or two more ingredients.", "", "almost", almost, 24)
           + kitGroup("Get inspired", "Recipes that use some of your ingredients but need a few more.", "", "insp", insp, 12)}
