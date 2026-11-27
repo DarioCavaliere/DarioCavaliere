@@ -605,6 +605,108 @@ main .look-grid{grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:18
 .combo-result{color:#161616}
 .combo-result b{font-family:var(--display);font-weight:800}
 
+/* ===== shopping list (Dado style: outlined cream panels, candy section dots, chunky type) ===== */
+#listBtn{position:relative;background:var(--b-orange);color:#161616;text-decoration:none}
+.list-badge{position:absolute;top:-6px;right:-6px;min-width:22px;height:22px;padding:0 6px;border-radius:999px;background:#161616;color:#fff;border:2px solid var(--b-white);font:700 .7rem/18px var(--body);text-align:center}
+.sl{display:grid;gap:18px;padding-top:12px}
+.sl-head{display:grid;gap:10px;max-width:720px}
+.sl-head h2{font-size:clamp(2rem,5vw,3rem)}
+.sl-head .lede{margin:0;font-size:1.05rem;color:var(--ink);opacity:.85}
+.sl-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:4px}
+.sl-actions .btn svg{width:20px;height:20px}
+.sl-panel{--ink:#161616;--muted:#3b3346;color:#161616;background:var(--b-white);border:var(--b-line);border-radius:30px;padding:20px 22px}
+@media (max-width:640px){.sl-panel{border-radius:24px;padding:16px}}
+.sl-panel h3{font-family:var(--display);font-weight:800;font-size:1.05rem;margin:0}
+.sl-progress{display:grid;gap:12px}
+.sl-prow{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.sl-left{background:var(--b-lime);border:2px solid #161616;border-radius:999px;padding:3px 12px;font-weight:600;font-size:.85rem;white-space:nowrap}
+.sl-bar{height:14px;border:2px solid #161616;border-radius:999px;background:#fff;overflow:hidden}
+.sl-bar i{display:block;height:100%;background:var(--b-coral);border-right:2px solid #161616;transition:width .35s ease}
+.sl-bar i[style="width:0%"]{border-right:0}
+.sl-progress p{margin:0;font-size:.9rem;color:#3b3346}
+.sl .section-h{margin-top:10px;align-items:center}
+.sl-addrec{padding:8px 16px;font-size:.88rem}
+.sl-none{margin:0;color:var(--ink);opacity:.85}
+.sl-recs{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:16px}
+@media (max-width:640px){.sl-recs{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;padding:4px 2px 8px;margin:0 -16px;padding-inline:16px}.sl-rec{flex:0 0 78%;scroll-snap-align:start}}
+.sl-rec{position:relative;--ink:#161616;color:#161616;background:var(--b-white);border:var(--b-line);border-radius:30px;overflow:hidden;display:flex;flex-direction:column}
+.sl-rimg{display:block;aspect-ratio:1200/670;border-bottom:var(--b-line);overflow:hidden}
+.sl-rimg img{display:block;width:100%;height:100%;object-fit:cover}
+.sl-rimg .ph-tag{display:none}
+.sl-rx{position:absolute;top:10px;right:10px;width:34px;height:34px;border-radius:50%;border:2px solid #161616;background:#fff;color:#161616;display:grid;place-items:center;cursor:pointer}
+.sl-rx svg{width:16px;height:16px}
+.sl-rbody{padding:12px 16px 14px;display:grid;gap:8px}
+.sl-rt{font-family:var(--display);font-weight:700;font-size:.95rem;line-height:1.25;text-decoration:none}
+.sl-serves{display:inline-flex;align-items:center;gap:8px;font-size:.86rem;font-weight:600}
+.sl-serves button,.sl-pm{width:30px;height:30px;flex:none;border-radius:50%;border:2px solid #161616;background:#fff;color:#161616;font:600 1rem/1 var(--body);cursor:pointer;display:grid;place-items:center;padding:0}
+.sl-serves button:hover,.sl-pm:hover{background:var(--b-lime)}
+.sl-picker{--ink:#161616;color:#161616;background:var(--b-white);border:var(--b-line);border-radius:30px;padding:16px;display:grid;gap:10px}
+.sl-picker .search{max-width:none}
+.sl-hint{margin:0;font-size:.86rem;color:#3b3346}
+.sl-pick{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:8px}
+.sl-pick button{width:100%;display:flex;align-items:center;gap:12px;text-align:left;background:#fff;border:2px solid #161616;border-radius:18px;padding:8px 12px 8px 8px;cursor:pointer;font:inherit;color:inherit}
+.sl-pick button:hover{background:var(--b-lime)}
+.sl-pick .m-thumb{width:44px;height:44px}
+.sl-pick span{flex:1;min-width:0;font-weight:600;font-size:.92rem;line-height:1.25}
+.sl-pick small{display:block;font-weight:400;font-size:.78rem;color:#3b3346}
+.sl-pick b{font-size:1.3rem;line-height:1}
+.sl-toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:6px}
+.sl-count{font-weight:600}
+.sl-group{padding-top:14px}
+.sl-group + .sl-group{border-top:2px solid rgba(22,22,22,.12);margin-top:6px}
+.sl-gh{display:flex;align-items:center;gap:10px;margin-bottom:4px}
+.sl-gh h3{flex:1}
+.sl-dot{width:16px;height:16px;border-radius:50%;border:2px solid #161616;flex:none;display:inline-block}
+.sl-n{font-size:.82rem;color:#3b3346}
+.sl-items{list-style:none;margin:0;padding:0}
+.sl-item{display:flex;align-items:center;gap:10px;min-height:52px;border-bottom:1.5px dashed rgba(22,22,22,.14)}
+.sl-item:last-child{border-bottom:0}
+.sl-check{flex:1;min-width:0;display:flex;align-items:center;gap:12px;background:none;border:0;padding:8px 0;font:inherit;color:inherit;text-align:left;cursor:pointer}
+.sl-box{width:28px;height:28px;flex:none;border:2.5px solid #161616;border-radius:9px;background:#fff;display:grid;place-items:center;transition:background .15s}
+.sl-box svg{width:18px;height:18px;opacity:0;transform:scale(.6);transition:opacity .15s,transform .15s}
+.sl-check[aria-checked="true"] .sl-box{background:var(--b-lime)}
+.sl-check[aria-checked="true"] .sl-box svg{opacity:1;transform:none}
+.sl-nm{min-width:0;font-size:1.02rem;font-weight:500;line-height:1.3}
+.sl-nm small{display:block;font-size:.76rem;font-weight:400;color:#3b3346;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sl-item.done .sl-nm{text-decoration:line-through;color:#6b6475}
+.sl-step{display:inline-flex;align-items:center;gap:6px;flex:none}
+.sl-q{font-family:var(--mono);font-size:.84rem;color:#3b3346;text-align:center;min-width:3.5ch;white-space:nowrap}
+.sl-q.edited{color:#161616;font-weight:600}
+.sl-item.done .sl-q{text-decoration:line-through}
+@media (max-width:420px){.sl-pm{width:28px;height:28px}.sl-q{font-size:.78rem}}
+.sl-add{display:flex;gap:10px;margin-top:16px}
+.sl-add input{flex:1;min-width:0;padding:12px 16px;border:var(--b-line);border-radius:999px;background:#fff;font-size:1rem;color:#161616}
+.sl-donepanel{background:#f1ede6}
+.sl-empty{margin-top:10px}
+.sl-reset{margin:0;text-align:center;color:var(--ink)}
+/* recipe page: add to list */
+.add-list-row{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:16px}
+.add-list-row .btn svg{width:20px;height:20px}
+.add-list-row .btn.in{background:var(--b-lime);color:#161616}
+/* supermarket mode */
+.market #topbar,.market footer,.market .b-badge{display:none!important}
+.market .wrap{padding-top:max(12px,env(safe-area-inset-top,0px))}
+.market-view{max-width:640px;margin:0 auto;display:grid;gap:18px;padding-bottom:40px}
+.mk-top{position:sticky;top:0;z-index:5;display:flex;align-items:center;justify-content:space-between;gap:14px;background:var(--b-white);border:var(--b-line);border-radius:28px;padding:14px 16px 14px 22px;color:#161616}
+.mk-top b{font-family:var(--display);font-size:2rem;font-weight:800;margin-right:8px}
+.mk-top div{font-size:1.15rem;font-weight:600}
+.mk-top small{display:block;font-size:.85rem;font-weight:400;color:#3b3346}
+.mk-done{font-size:1.1rem;padding:14px 26px}
+.mk-group{--ink:#161616;color:#161616;background:var(--b-white);border:var(--b-line);border-radius:28px;padding:14px 16px}
+.mk-group h3{display:flex;align-items:center;gap:10px;margin:2px 4px 6px;font-family:var(--display);font-weight:800;font-size:1.1rem}
+.mk-group ul{list-style:none;margin:0;padding:0}
+.mk-row{width:100%;display:flex;align-items:center;gap:16px;min-height:68px;padding:10px 6px;background:none;border:0;border-top:2px solid rgba(22,22,22,.1);font:inherit;color:inherit;text-align:left;cursor:pointer}
+.mk-group li:first-child .mk-row{border-top:0}
+.mk-box{width:40px;height:40px;flex:none;border:3px solid #161616;border-radius:12px;background:#fff;display:grid;place-items:center}
+.mk-box svg{width:26px;height:26px;opacity:0}
+.mk-row.done .mk-box{background:var(--b-lime)}
+.mk-row.done .mk-box svg{opacity:1}
+.mk-nm{flex:1;min-width:0;font-size:1.35rem;font-weight:600;line-height:1.25}
+.mk-q{flex:none;font-size:1.1rem;color:#3b3346;font-weight:500}
+.mk-basket{background:#f1ede6}
+.mk-basket .mk-nm,.mk-basket .mk-q{text-decoration:line-through;color:#6b6475;font-size:1.1rem}
+.mk-basket .mk-row{min-height:56px}
+.mk-all{--ink:#161616;color:#161616;background:var(--b-white);border:var(--b-line);border-radius:28px;padding:28px;text-align:center;font-size:1.2rem;font-weight:600}
 footer{color:var(--ink)}
 [hidden]{display:none!important}
 </style>
@@ -631,6 +733,7 @@ footer{color:var(--ink)}
       <input id="q" type="search" placeholder="Search recipes or ingredients" aria-label="Search recipes" autocomplete="off">
     </div>
     <a class="btn primary" href="#share" id="shareBtn" aria-label="Share a recipe">+ Share<span class="sb-long">&nbsp;a recipe</span></a>
+    <a class="menu-btn" id="listBtn" href="#list" aria-label="Shopping list"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 9.5h17l-1.6 9a2 2 0 0 1-2 1.6H7.1a2 2 0 0 1-2-1.6z"/><path d="M8.5 9.5 11 4M15.5 9.5 13 4M9.5 13.5v3M14.5 13.5v3"/></svg><span class="list-badge" id="listBadge" hidden>0</span></a>
     <button class="menu-btn" id="menuBtn" type="button" aria-label="Menu" aria-expanded="false" aria-controls="menuPanel"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
     <button class="menu-btn" id="themeBtn" type="button" aria-label="Switch to dark mode"></button>
     <div class="menu-panel" id="menuPanel" role="dialog" aria-label="Menu" hidden></div>
@@ -2007,14 +2110,306 @@ const timerTileHTML = comboHTML;
 /* ---------- favourites + recent searches (private to each person) ---------- */
 const prefs = {favs: new Set(), searches: []};
 let prefsRef = null, prefsLocalOnly = true, prefsSaveT = 0, prefsWriting = Promise.resolve(), me = null;
+/* ---------- shopping list: recipes in, one merged list out, grouped by supermarket section ----------
+   Stored with favourites (prefs.list), so it lives in this browser and follows a signed-in Claude account. */
+const SL_UNITS = /^\s*(kg|g|ml|l|tbsp|tsp|cloves?|handfuls?|pinch(?:es)?|sprigs?|sheets?|portions?|bunch(?:es)?|cans?|tins?|slices?|stalks?|cups?)\b\.?\s*(?:of\s+)?/i;
+const SL_SECTIONS = [
+  {key:"veg",    name:"Fruit & veg",             color:"#d8f26e"},
+  {key:"meat",   name:"Meat & fish",             color:"#f2765c"},
+  {key:"dairy",  name:"Dairy & eggs",            color:"#a6d6f5"},
+  {key:"grains", name:"Bread, pasta & grains",   color:"#ffc27a"},
+  {key:"tins",   name:"Tins & jars",             color:"#c4b2ff"},
+  {key:"pantry", name:"Oils, spices & sauces",   color:"#f6b2ef"},
+  {key:"other",  name:"Everything else",         color:"#fffdf8"}
+];
+/* checked in order: the first rule that matches wins, so "coconut milk" lands in tins before "milk" can claim it */
+const SL_RULES = [
+  ["tins",   /coconut milk|peeled tomato|chopped tomato|tinned tomato|passata|tomato paste|tinned|canned|chickpea|cannellini|borlotti|kidney bean|black bean|white bean|beans\b|lentil|capers|olives|chipotle|adobo|jam\b|marmalade|confettura|tahini|pickled/],
+  ["pantry", /\boil\b|vinegar|\bsalt\b|black pepper|white pepper|peppercorn|chili powder|chilli powder|chili flakes|dried chil|spice|cumin|paprika|turmeric|cinnamon|cardamom|nutmeg|clove(s)?$|saffron|garam|curry|baharat|za'atar|sumac|dried oregano|dried |soy|miso|mirin|sake|sauce|honey|sugar|syrup|vanilla|baking|bicarbonate|yeast|cocoa|chocolate|dashi|kombu|nori|wakame|bonito|katsuobushi|sesame|stock|broth|wine|marsala|limoncello|rum|whisky|coffee|espresso|agar|gelatin|almond|walnut|pistachio|hazelnut|pine nut|cashew|peanut|raisin|nougat|torrone|candied|doubanjiang|gochujang|stock cube|mustard|ketchup|mayonnaise|breadcrumbs/],
+  ["dairy",  /milk|cream|butter|cheese|mozzarella|parmigiano|parmesan|pecorino|ricotta|mascarpone|yogurt|yoghurt|paneer|ghee|burrata|stracciatella|feta|brie|scamorza|provola|caciocavallo|queso|crème|\beggs?\b|yolk|tofu/],
+  ["meat",   /chicken|beef|pork|veal|lamb|guanciale|pancetta|prosciutto|\bham\b|bacon|sausage|salsiccia|mince|steak|liver|chashu|fish|salmon|tuna|anchov|clam|prawn|shrimp|bream|cod\b|mackerel|bottarga|mussel|squid|turkey|duck/],
+  ["grains", /bread|pita|tortilla|naan|flour|cornflour|\brice\b|risotto|pasta|spaghetti|penne|rigatoni|linguine|tagliatelle|tagliolini|bucatini|trofie|orecchiette|ditalini|macaroni|lasagne|tortellini|ravioli|gnocchi|noodle|ramen|soba|udon|couscous|bulgur|freekeh|oats|polenta|savoiardi|biscuit|pandoro|puff pastry|pastry|cracker|totopos|tortilla chips|semolina|quinoa|fregola|cavatelli|malloreddus/],
+  ["veg",    /onion|garlic|shallot|tomato|potato|carrot|celery|pepper|courgette|zucchin|aubergine|eggplant|lemon|lime|orange|apple|pear|banana|avocado|mushroom|shiitake|spinach|lettuce|salad|rocket|cabbage|leek|fennel|cucumber|broccoli|cauliflower|\bpeas?\b|corn|chil|ginger|radish|berr|mango|pumpkin|squash|sprout|bok choy|pak choi|kale|cavolo|chard|chicory|cicoria|artichoke|friarielli|cime di rapa|asparagus|beetroot|melon|grape|fig|plum|peach|apricot|cherr|pomegranate|herb|basil|parsley|mint|coriander|cilantro|dill|rosemary|thyme|sage|oregano|chive|bay lea|lemongrass|edamame|sweet potato|yam|okra|watercress|frisée|endive/]
+];
+const slSection = name => { const n = name.toLowerCase(); for (const [k, rx] of SL_RULES) if (rx.test(n)) return k; return "other"; };
+function slClean(s){
+  s = s.replace(/\([^)]*\)/g, " ").split(",")[0];
+  s = s.replace(/\s+(in|into)\s+\d.*$/i, "").replace(/\s+(in|into|cut into)\s+(small\s+|large\s+|thin\s+|thick\s+)?(cubes|strips|chunks|florets|wedges|slices|pieces|rings|dice|half-moons)\b.*$/i, "");
+  s = s.replace(/\s+(for|to)\s+(serve|serving|frying|fry|garnish|dust|dusting|drizzle|drizzling|taste|the\s+\w+).*$/i, "").replace(/\boptional\b/ig, "");
+  for (let i = 0; i < 3; i++) s = s.replace(/^\s*(very\s+)?(ripe|small|large|medium|big|fresh|freshly|cold|warm|hot|thick|thin|good|soft|firm|extra virgin|whole|a few|few|some)\s+/i, "");
+  s = s.replace(/\s+/g, " ").trim();
+  return s ? s.charAt(0).toUpperCase() + s.slice(1) : "";
+}
+function slKey(name){
+  let n = name.toLowerCase().replace(/[^a-zà-ÿ' ]/g, " ").replace(/\s+/g, " ").trim();
+  const w = n.split(" "), last = w.pop() || "";
+  const sing = /oes$/.test(last) ? last.slice(0, -2) : /ies$/.test(last) ? last.slice(0, -3) + "y" : (/[^s]s$/.test(last) && last.length > 3) ? last.slice(0, -1) : last;
+  return [...w, sing].join(" ");
+}
+const SL_UNIT_NORM = {kg:["g",1000], g:["g",1], ml:["ml",1], l:["ml",1000]};
+/* "350 g chicken breasts (about 2)" -> {name:"Chicken breasts", unit:"g", value:350} ; "Salt" -> {name:"Salt", value:null} */
+function slParse(line){
+  let value = null, unit = "", rest = String(line || "");
+  const q = parseQty(rest);
+  if (q){ value = q.value; rest = q.rest; }
+  const m = rest.match(SL_UNITS);
+  if (m && value !== null){
+    const u = m[1].toLowerCase(), after = rest.slice(m[0].length);
+    if (slClean(after)){
+      if (SL_UNIT_NORM[u]){ unit = SL_UNIT_NORM[u][0]; value *= SL_UNIT_NORM[u][1]; }
+      else unit = /(pinch|bunch)es$/.test(u) ? u.slice(0, -2) : (u === "tbsp" || u === "tsp") ? u : u.replace(/s$/, "");
+      rest = after;
+    }
+  }
+  const name = slClean(rest) || slClean(line);
+  return {name, unit, value, key: slKey(name), section: slSection(name)};
+}
+function slFmt(value, unit){
+  if (value === null || value === undefined) return "";
+  if (unit === "g" && value >= 1000) return fmtQty(Math.round(value / 100) / 10) + " kg";
+  if (unit === "ml" && value >= 1000) return fmtQty(Math.round(value / 100) / 10) + " l";
+  if (unit === "g" || unit === "ml") return Math.round(value) + " " + unit;
+  const v = fmtQty(value);
+  if (!unit) return v;
+  if (unit === "tbsp" || unit === "tsp") return v + " " + unit;
+  const plural = value > 1 ? (/(ch|sh)$/.test(unit) ? unit + "es" : unit + "s") : unit;
+  return v + " " + plural;
+}
+const slStep = (v, unit) => unit === "g" || unit === "ml" ? (v < 100 ? 10 : v < 1000 ? 50 : 100) : (v < 1 ? .25 : v < 3 && (unit === "tbsp" || unit === "tsp") ? .5 : 1);
+
+const SL_EMPTY = () => ({recipes: [], extras: [], checked: [], qty: {}, hidden: [], sort: "aisle"});
+prefs.list = SL_EMPTY();
+function slSanitize(l){
+  const o = SL_EMPTY(); if (!l || typeof l !== "object") return o;
+  if (Array.isArray(l.recipes)) o.recipes = l.recipes.filter(x => x && typeof x.id === "string").map(x => ({id: x.id, serves: Math.max(1, Math.min(99, Math.round(+x.serves) || 1))})).slice(0, 40);
+  if (Array.isArray(l.extras)) o.extras = l.extras.filter(x => x && typeof x.text === "string" && x.text.trim()).map(x => ({id: String(x.id || Math.random().toString(36).slice(2)), text: x.text.slice(0, 80)})).slice(0, 200);
+  if (Array.isArray(l.checked)) o.checked = l.checked.filter(x => typeof x === "string").slice(0, 400);
+  if (Array.isArray(l.hidden)) o.hidden = l.hidden.filter(x => typeof x === "string").slice(0, 400);
+  if (l.qty && typeof l.qty === "object") for (const [k, v] of Object.entries(l.qty)) if (typeof v === "number" && v > 0 && v < 1e6) o.qty[k] = v;
+  if (["aisle", "recipe", "az"].includes(l.sort)) o.sort = l.sort;
+  return o;
+}
+const slSave = () => { savePrefs(); slBadge(); };
+const slRecipe = id => allRecipes().find(r => r.id === id);
+const slInList = id => prefs.list.recipes.find(x => x.id === id);
+function slAddRecipe(id, serves){
+  const r = slRecipe(id); if (!r) return;
+  const L = prefs.list, have = L.recipes.find(x => x.id === id);
+  if (have) have.serves = serves; else L.recipes.push({id, serves});
+  const keys = new Set((r.ingredients || []).map(l => slParse(l).key));
+  L.hidden = L.hidden.filter(k => !keys.has(k)); L.checked = L.checked.filter(k => !keys.has(k));
+  for (const k of keys) delete L.qty[k];
+  slSave();
+}
+function slRemoveRecipe(id){ prefs.list.recipes = prefs.list.recipes.filter(x => x.id !== id); slSave(); }
+
+/* every ingredient line from the chosen recipes plus your own extras, scaled to the servings you picked */
+function slEntries(){
+  const out = [];
+  for (const {id, serves} of prefs.list.recipes){
+    const r = slRecipe(id); if (!r) continue;
+    const f = serves / (Number(r.serves) || 1);
+    for (const line of r.ingredients || []){ const p = slParse(line); if (!p.name) continue; out.push({...p, value: p.value === null ? null : p.value * f, from: r.title, rid: r.id}); }
+  }
+  for (const x of prefs.list.extras){ const p = slParse(x.text); if (p.name) out.push({...p, from: "", rid: "", extra: x.id}); }
+  return out.filter(e => !prefs.list.hidden.includes(e.key));
+}
+/* merge entries that share a key: quantities in the same unit are added up, different units are listed side by side */
+function slMerge(entries, useOverrides){
+  const map = new Map();
+  for (const e of entries){
+    let it = map.get(e.key);
+    if (!it){ it = {key: e.key, name: e.name, section: e.section, parts: new Map(), from: new Set(), loose: false, extra: false}; map.set(e.key, it); }
+    if (e.value === null) it.loose = true; else it.parts.set(e.unit, (it.parts.get(e.unit) || 0) + e.value);
+    if (e.from) it.from.add(e.from); if (e.extra) it.extra = true;
+  }
+  for (const it of map.values()){
+    if (useOverrides && it.parts.size === 1 && prefs.list.qty[it.key]){ const [u] = it.parts.keys(); it.parts.set(u, prefs.list.qty[it.key]); it.edited = true; }
+    it.qtyText = [...it.parts].map(([u, v]) => slFmt(v, u)).join(" + ");
+    it.single = it.parts.size === 1 ? [...it.parts][0] : null;
+  }
+  return [...map.values()];
+}
+function slItems(){ return slMerge(slEntries(), true); }
+function slBadge(){
+  const b = document.getElementById("listBadge"); if (!b) return;
+  const chk = new Set(prefs.list.checked), n = slItems().filter(i => !chk.has(i.key)).length;
+  b.textContent = n > 99 ? "99+" : n; b.hidden = !n;
+}
+const SL_ICON = {
+  basket:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 9.5h17l-1.6 9a2 2 0 0 1-2 1.6H7.1a2 2 0 0 1-2-1.6z"/><path d="M8.5 9.5 11 4M15.5 9.5 13 4M9.5 13.5v3M14.5 13.5v3"/></svg>`,
+  share:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3.5M7.5 8 12 3.5 16.5 8"/><path d="M5 12.5v6A2 2 0 0 0 7 20.5h10a2 2 0 0 0 2-2v-6"/></svg>`,
+  cart:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 4h2.2l2.3 11h10.3l2-7.5H6.4"/><circle cx="9.5" cy="19" r="1.4"/><circle cx="16.5" cy="19" r="1.4"/></svg>`,
+  check:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>`,
+  x:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>`
+};
+let slPickerOpen = false, slPickerQ = "", slMsg = "";
+
+function slRow(it, chk, mode){
+  const on = chk.has(it.key), from = it.from.size > 1 ? `${it.from.size} recipes` : it.from.size === 1 ? [...it.from][0] : (it.extra ? "Added by you" : "");
+  const stepper = mode !== "recipe" && it.single && !on
+    ? `<span class="sl-step"><button type="button" class="sl-pm" data-qty="${esc(it.key)}" data-d="-1" aria-label="Less ${esc(it.name)}">−</button><span class="sl-q${it.edited ? " edited" : ""}">${esc(it.qtyText)}</span><button type="button" class="sl-pm" data-qty="${esc(it.key)}" data-d="1" aria-label="More ${esc(it.name)}">+</button></span>`
+    : `<span class="sl-q">${esc(it.qtyText)}</span>`;
+  return `<li class="sl-item${on ? " done" : ""}"><button type="button" class="sl-check" role="checkbox" aria-checked="${on}" data-check="${esc(it.key)}"><span class="sl-box">${SL_ICON.check}</span><span class="sl-nm">${esc(it.name)}${mode !== "recipe" && from ? `<small>${esc(from)}</small>` : ""}</span></button>${stepper}</li>`;
+}
+function slGroupHTML(title, color, items, chk, mode){
+  if (!items.length) return "";
+  return `<section class="sl-group"><div class="sl-gh"><span class="sl-dot" style="background:${color}"></span><h3>${esc(title)}</h3><span class="sl-n">${items.length} item${items.length === 1 ? "" : "s"}</span></div><ul class="sl-items">${items.map(i => slRow(i, chk, mode)).join("")}</ul></section>`;
+}
+function slPickerHTML(){
+  const q = slPickerQ.trim().toLowerCase(), inList = new Set(prefs.list.recipes.map(x => x.id)), all = allRecipes().filter(r => !inList.has(r.id));
+  const favs = [...prefs.favs].map(id => all.find(r => r.id === id)).filter(Boolean);
+  const list = q ? all.filter(r => (r.title + " " + (r.ingredients || []).join(" ")).toLowerCase().includes(q)).slice(0, 12) : [...favs, ...all.filter(r => !prefs.favs.has(r.id))].slice(0, 8);
+  return `<div class="sl-picker">
+      <div class="search"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><input id="slPickQ" type="search" placeholder="Find a recipe to add" value="${esc(slPickerQ)}" autocomplete="off" aria-label="Find a recipe to add"></div>
+      <p class="sl-hint">${q ? `${list.length ? "Tap a recipe to add its ingredients." : "No recipes match that."}` : favs.length ? "Your favourites first. Tap to add." : "Tap a recipe to add its ingredients, or search."}</p>
+      <ul class="sl-pick">${list.map(r => `<li><button type="button" data-pick="${esc(r.id)}">${dishArt(r, "m-thumb")}<span>${esc(r.title)}<small>${esc(r.serves)} servings · ${(r.ingredients || []).length} ingredients</small></span><b aria-hidden="true">+</b></button></li>`).join("")}</ul>
+    </div>`;
+}
+function renderList(){
+  const L = prefs.list, chk = new Set(L.checked), items = slItems(), left = items.filter(i => !chk.has(i.key)), done = items.filter(i => chk.has(i.key));
+  const total = items.length, pct = total ? Math.round(done.length / total * 100) : 0;
+  const recs = L.recipes.map(x => ({...x, r: slRecipe(x.id)})).filter(x => x.r);
+  let body = "";
+  if (!total) body = `<div class="empty sl-empty"><b>Your list is empty.</b><br>Open any recipe and tap <b>Add to shopping list</b>, pick recipes above, or type an item below.</div>`;
+  else if (L.sort === "recipe"){
+    const entries = slEntries(), groups = [];
+    for (const x of recs){ const its = slMerge(entries.filter(e => e.rid === x.id), false).filter(i => !chk.has(i.key)); if (its.length) groups.push(slGroupHTML(x.r.title, "#ffc27a", its, chk, "recipe")); }
+    const ex = slMerge(entries.filter(e => e.extra), false).filter(i => !chk.has(i.key));
+    if (ex.length) groups.push(slGroupHTML("Added by you", "#fffdf8", ex, chk, "recipe"));
+    body = groups.join("");
+  } else if (L.sort === "az"){
+    body = slGroupHTML("A to Z", "#d8f26e", left.sort((a, b) => a.name.localeCompare(b.name)), chk, "az");
+  } else {
+    body = SL_SECTIONS.map(s => slGroupHTML(s.name, s.color, left.filter(i => i.section === s.key).sort((a, b) => a.name.localeCompare(b.name)), chk, "aisle")).join("");
+  }
+  if (total && !left.length) body = `<div class="empty sl-empty"><b>All done.</b> Everything is in your basket.</div>` + body;
+  view.innerHTML = `
+    <a class="btn ghost back" href="#">← All recipes</a>
+    <section class="sl">
+      <header class="sl-head">
+        <span class="eyebrow">Your kitchen</span>
+        <h2>Shopping list</h2>
+        <p class="lede">Everything you need for your next meals, merged into one list and sorted by supermarket section.</p>
+        <div class="sl-actions">
+          <a class="btn primary sl-market" href="#shop">${SL_ICON.cart} Supermarket mode</a>
+          <button class="btn" type="button" id="slShare">${SL_ICON.share} Share list</button>
+        </div>
+        <p class="msg" id="slMsg" role="status">${esc(slMsg)}</p>
+      </header>
+      <div class="sl-panel sl-progress">
+        <div class="sl-prow"><h3>This week's groceries</h3><span class="sl-left">${left.length} left</span></div>
+        <div class="sl-bar" role="progressbar" aria-valuemin="0" aria-valuemax="${total}" aria-valuenow="${done.length}" aria-label="Items in your basket"><i style="width:${pct}%"></i></div>
+        <p>${done.length} of ${total} item${total === 1 ? "" : "s"} in your basket</p>
+      </div>
+      <div class="section-h"><h3>Your recipes</h3><button class="btn sl-addrec" type="button" id="slPick" aria-expanded="${slPickerOpen}">${slPickerOpen ? "Close" : "+ Add recipes"}</button></div>
+      ${slPickerOpen ? slPickerHTML() : ""}
+      ${recs.length ? `<div class="sl-recs">${recs.map(x => `<article class="sl-rec">
+          <a class="sl-rimg" href="${recipeHref(x.r)}" aria-label="Open ${esc(x.r.title)}">${boxInner(x.r, "")}</a>
+          <button class="sl-rx" type="button" data-unpick="${esc(x.id)}" aria-label="Remove ${esc(x.r.title)} from the list">${SL_ICON.x}</button>
+          <div class="sl-rbody"><a class="sl-rt" href="${recipeHref(x.r)}">${esc(x.r.title)}</a>
+            <div class="sl-serves"><button type="button" data-serve="${esc(x.id)}" data-d="-1" aria-label="Fewer servings">−</button><span>${x.serves} serving${x.serves === 1 ? "" : "s"}</span><button type="button" data-serve="${esc(x.id)}" data-d="1" aria-label="More servings">+</button></div></div>
+        </article>`).join("")}</div>` : `<p class="sl-none">No recipes yet. Add a few and their ingredients land in the list, with shared ones merged.</p>`}
+      <div class="sl-panel sl-listpanel">
+        <div class="sl-toolbar"><span class="sl-count">${total} ingredient${total === 1 ? "" : "s"}</span>
+          <div class="seg" role="radiogroup" aria-label="Sort the list by">${[["aisle", "Aisle"], ["recipe", "Recipe"], ["az", "A to Z"]].map(([v, l]) => `<button type="button" role="radio" data-sort="${v}" aria-checked="${L.sort === v}">${l}</button>`).join("")}</div></div>
+        ${body}
+        <form class="sl-add" id="slAdd" autocomplete="off"><input id="slAddIn" maxlength="80" placeholder="Add an item, e.g. 2 lemons" aria-label="Add an item"><button class="btn primary" type="submit">+ Add</button></form>
+      </div>
+      ${done.length ? `<div class="sl-panel sl-donepanel"><div class="sl-toolbar"><h3>In your basket</h3><button class="linkish" type="button" id="slClear">Clear</button></div><ul class="sl-items">${done.map(i => slRow(i, chk, "aisle")).join("")}</ul></div>` : ""}
+      ${total || recs.length ? `<p class="sl-reset"><button class="linkish" type="button" id="slReset">Start a new list</button></p>` : ""}
+    </section>`;
+  slMsg = "";
+  slWire();
+}
+function slText(){
+  const chk = new Set(prefs.list.checked), left = slItems().filter(i => !chk.has(i.key));
+  const lines = ["Dado shopping list", ""];
+  for (const s of SL_SECTIONS){ const its = left.filter(i => i.section === s.key); if (!its.length) continue; lines.push(s.name); for (const i of its) lines.push("• " + i.name + (i.qtyText ? " — " + i.qtyText : "")); lines.push(""); }
+  const recs = prefs.list.recipes.map(x => slRecipe(x.id)).filter(Boolean);
+  if (recs.length) lines.push("For: " + recs.map(r => r.title).join(", "));
+  return lines.join("\n").trim();
+}
+async function slShare(){
+  const text = slText();
+  try {
+    if (navigator.share){ await navigator.share({title: "Dado shopping list", text}); return; }
+  } catch (e){ if (e && e.name === "AbortError") return; }
+  try { await navigator.clipboard.writeText(text); slMsg = "List copied. Paste it into a message to share it."; }
+  catch { slMsg = "Couldn't copy automatically. Select the list and copy it by hand."; }
+  const m = document.getElementById("slMsg"); if (m) m.textContent = slMsg; slMsg = "";
+}
+function slToggle(key){
+  const L = prefs.list, i = L.checked.indexOf(key);
+  if (i >= 0) L.checked.splice(i, 1); else { L.checked.push(key); try { haptic(false); } catch {} }
+  slSave();
+}
+function slWire(){
+  view.querySelectorAll("[data-check]").forEach(b => b.onclick = () => { slToggle(b.dataset.check); location.hash === "#shop" ? renderMarket() : renderList(); });
+  view.querySelectorAll("[data-qty]").forEach(b => b.onclick = () => {
+    const it = slItems().find(i => i.key === b.dataset.qty); if (!it || !it.single) return;
+    const [u, v] = it.single, st = slStep(v + (+b.dataset.d < 0 ? -0.0001 : 0), u);
+    prefs.list.qty[it.key] = Math.max(st, Math.round((v + st * (+b.dataset.d)) * 100) / 100); slSave(); renderList();
+  });
+  view.querySelectorAll("[data-serve]").forEach(b => b.onclick = () => {
+    const x = slInList(b.dataset.serve); if (!x) return;
+    x.serves = Math.max(1, Math.min(99, x.serves + (+b.dataset.d))); slSave(); renderList();
+  });
+  view.querySelectorAll("[data-unpick]").forEach(b => b.onclick = () => { slRemoveRecipe(b.dataset.unpick); renderList(); });
+  view.querySelectorAll("[data-pick]").forEach(b => b.onclick = () => { const r = slRecipe(b.dataset.pick); if (r){ slAddRecipe(r.id, Number(r.serves) || 2); slMsg = `Added ${r.title}.`; } renderList(); });
+  view.querySelectorAll("[data-sort]").forEach(b => b.onclick = () => { prefs.list.sort = b.dataset.sort; slSave(); renderList(); });
+  const pk = document.getElementById("slPick"); if (pk) pk.onclick = () => { slPickerOpen = !slPickerOpen; slPickerQ = ""; renderList(); if (slPickerOpen){ const i = document.getElementById("slPickQ"); if (i) i.focus(); } };
+  const pq = document.getElementById("slPickQ"); if (pq) pq.oninput = () => { slPickerQ = pq.value; const pos = pq.selectionStart; renderList(); const n = document.getElementById("slPickQ"); if (n){ n.focus(); n.setSelectionRange(pos, pos); } };
+  const add = document.getElementById("slAdd"); if (add) add.onsubmit = e => {
+    e.preventDefault(); const inp = document.getElementById("slAddIn"), t = inp.value.trim(); if (!t) return;
+    const key = slParse(t).key; prefs.list.hidden = prefs.list.hidden.filter(k => k !== key); prefs.list.checked = prefs.list.checked.filter(k => k !== key); delete prefs.list.qty[key];
+    prefs.list.extras.push({id: Date.now().toString(36), text: t}); slSave(); renderList(); const n = document.getElementById("slAddIn"); if (n) n.focus();
+  };
+  const sh = document.getElementById("slShare"); if (sh) sh.onclick = slShare;
+  const cl = document.getElementById("slClear"); if (cl) cl.onclick = () => {
+    const L = prefs.list, gone = new Set(L.checked);
+    L.extras = L.extras.filter(x => !gone.has(slParse(x.text).key));
+    L.hidden = [...new Set([...L.hidden, ...gone])]; L.checked = []; for (const k of gone) delete L.qty[k];
+    slSave(); renderList();
+  };
+  const rs = document.getElementById("slReset"); if (rs){ let armed = false; rs.onclick = () => {
+    if (!armed){ armed = true; rs.textContent = "Tap again to empty the whole list"; return; }
+    prefs.list = {...SL_EMPTY(), sort: prefs.list.sort}; slSave(); renderList();
+  }; }
+}
+/* supermarket mode: one column, big type, big boxes, nothing else. The screen stays on while it is open. */
+let slWake = null;
+async function slKeepAwake(on){
+  try {
+    if (on && !slWake && navigator.wakeLock){ slWake = await navigator.wakeLock.request("screen"); slWake.addEventListener("release", () => { slWake = null; }); }
+    if (!on && slWake){ await slWake.release(); slWake = null; }
+  } catch { slWake = null; }
+}
+document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible" && location.hash === "#shop") slKeepAwake(true); });
+function renderMarket(){
+  const chk = new Set(prefs.list.checked), items = slItems(), left = items.filter(i => !chk.has(i.key)), done = items.filter(i => chk.has(i.key));
+  const row = (i, on) => `<li><button type="button" class="mk-row${on ? " done" : ""}" role="checkbox" aria-checked="${on}" data-check="${esc(i.key)}"><span class="mk-box">${SL_ICON.check}</span><span class="mk-nm">${esc(i.name)}</span>${i.qtyText ? `<span class="mk-q">${esc(i.qtyText)}</span>` : ""}</button></li>`;
+  const groups = SL_SECTIONS.map(s => { const its = left.filter(i => i.section === s.key).sort((a, b) => a.name.localeCompare(b.name)); return its.length ? `<section class="mk-group"><h3><span class="sl-dot" style="background:${s.color}"></span>${esc(s.name)}</h3><ul>${its.map(i => row(i, false)).join("")}</ul></section>` : ""; }).join("");
+  view.innerHTML = `
+    <section class="market-view">
+      <header class="mk-top"><div><b>${left.length}</b> to get<small>${done.length} in the basket</small></div><a class="btn primary mk-done" href="#list">Done</a></header>
+      ${items.length ? (left.length ? groups : `<div class="mk-all">Everything is in your basket.</div>`) : `<div class="mk-all">Your list is empty. <a href="#list">Add some items first.</a></div>`}
+      ${done.length ? `<section class="mk-group mk-basket"><h3>In your basket</h3><ul>${done.map(i => row(i, true)).join("")}</ul></section>` : ""}
+    </section>`;
+  slWire();
+  slKeepAwake(true);
+}
+
 function applyPrefs(p){
   prefs.favs = new Set(Array.isArray(p.favs) ? p.favs.filter(x => typeof x === "string") : []);
   prefs.searches = Array.isArray(p.searches) ? p.searches.filter(x => typeof x === "string").slice(0, 8) : [];
-  refreshFavUI(); renderMenu();
+  if (p.list) prefs.list = slSanitize(p.list);
+  refreshFavUI(); renderMenu(); slBadge();
+  if (location.hash === "#list" && !document.activeElement?.closest?.(".sl-picker,.sl-add")) renderList();
 }
 function loadLocalPrefs(){ try { applyPrefs(JSON.parse(localStorage.getItem("dado-prefs") || "{}")); } catch {} }
 function savePrefs(){
-  const body = {favs: [...prefs.favs], searches: prefs.searches};
+  const body = {favs: [...prefs.favs], searches: prefs.searches, list: prefs.list};
   try { localStorage.setItem("dado-prefs", JSON.stringify(body)); } catch {}
   if (!prefsRef || prefsLocalOnly) return;
   clearTimeout(prefsSaveT);
@@ -2232,6 +2627,7 @@ function renderDetail(id){
             <button type="button" id="plus" aria-label="More servings">+</button>
           </div>
           <ul class="ing" id="ing"></ul>
+          <div class="add-list-row"><button class="btn primary" type="button" id="addList"></button><a class="linkish" href="#list" id="viewList" hidden>View list</a></div>
         </section>
         <section>
           <h3 class="steps-h">Method</h3>
@@ -2246,7 +2642,16 @@ function renderDetail(id){
     document.getElementById("ing").innerHTML = (r.ingredients||[]).map((l,i) =>
       `<li><label><input type="checkbox" id="ing-${i}" ${checked[i]?"checked":""}><span>${ingHTML(l, serves/base)}</span></label></li>`).join("");
     document.getElementById("servesOut").textContent = serves;
+    paintAdd();
   };
+  const addBtn = document.getElementById("addList"), viewList = document.getElementById("viewList");
+  function paintAdd(){
+    const have = slInList(r.id), same = have && have.serves === serves;
+    addBtn.classList.toggle("in", !!same);
+    addBtn.innerHTML = same ? `${SL_ICON.check} In your shopping list` : have ? `${SL_ICON.basket} Update list to ${serves} serving${serves === 1 ? "" : "s"}` : `${SL_ICON.basket} Add to shopping list`;
+    viewList.hidden = !have;
+  }
+  addBtn.onclick = () => { if (slInList(r.id)?.serves === serves){ location.hash = "list"; return; } slAddRecipe(r.id, serves); try { haptic(false); } catch {} paintAdd(); };
   drawIng();
   document.getElementById("minus").onclick = () => { if (serves > 1){ serves--; drawIng(); } };
   document.getElementById("plus").onclick = () => { if (serves < 99){ serves++; drawIng(); } };
@@ -2405,8 +2810,13 @@ function route(){
   if (h !== "share" && !h.startsWith("k-")) state.preKitchen = "";
   const home = !(h === "share" || h === "look" || h === "saved" || h.startsWith("k-") || h.startsWith("r-"));
   document.getElementById("topbar").hidden = false;
+  document.documentElement.classList.toggle("market", h === "shop");
+  if (h !== "shop") slKeepAwake(false);
+  slBadge();
   if (typeof Hero !== "undefined") Hero.hide(); /* the marble lazy-susan hero is kept in the code but switched off in this style */
-  if (h === "share") renderShare();
+  if (h === "list") { renderList(); window.scrollTo(0, 0); }
+  else if (h === "shop") { renderMarket(); window.scrollTo(0, 0); }
+  else if (h === "share") renderShare();
   else if (h === "look") renderLook();
   else if (h === "saved") renderSaved();
   else if (h.startsWith("k-")) renderKitchen(h.slice(2));
@@ -2585,7 +2995,7 @@ async function resolveNames(){
       let first = true;
       prefsRef.onSnapshot(s => {
         if (s.exists) applyPrefs(s.data());
-        else if (first && (prefs.favs.size || prefs.searches.length)) savePrefs();
+        else if (first && (prefs.favs.size || prefs.searches.length || prefs.list.recipes.length || prefs.list.extras.length)) savePrefs();
         first = false;
         if (location.hash === "#saved") renderSaved();
       }, () => { prefsLocalOnly = true; });
