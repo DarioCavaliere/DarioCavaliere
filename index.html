@@ -576,6 +576,11 @@ main .look-grid{grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:18
 .mchip svg{border-radius:50%}
 .mchip.kchip{background-image:none;box-shadow:none;border:var(--b-line);font-weight:600}
 .mchip.meal-chip{padding:9px 20px}
+.mchip.meal-chip.diet-veg{background:#d8f26e;color:#161616}
+.mchip.meal-chip.diet-vegan{background:#4f9a45;color:#fff}
+.mchip.meal-chip.diet-veg:hover{background:#d8f26e}
+.mchip.meal-chip.diet-vegan:hover{background:#4f9a45}
+.mchip.meal-chip.diet-veg[aria-pressed="true"],.mchip.meal-chip.diet-vegan[aria-pressed="true"]{background:#161616;color:#fff}
 .mchip.kchip:hover{box-shadow:3px 3px 0 #161616}
 .mchip.kchip[aria-pressed="true"]{background-color:#161616!important;color:#fff;box-shadow:none}
 .fav{background:#fff;border:var(--b-line);box-shadow:none;color:#161616}
@@ -1746,7 +1751,9 @@ const MEALS = [
   {key:"breakfast", label:"Breakfast", title:"For breakfast", test:r => r.category === "Breakfast" || /shakshuka|chilaquiles|pancake|frittata|banana bread/i.test(r.title || "")},
   {key:"lunch",     label:"Lunch",     title:"For lunch",     test:r => ["Salads", "Soups", "Starters"].includes(r.category) || (r.category === "Mains" && Number(r.time) > 0 && r.time <= 30) || /wrap|bowl|tacos|puccia|arayes|meal prep|panzanella|torta salata/i.test(r.title || "")},
   {key:"dinner",    label:"Dinner",    title:"For dinner",    test:r => r.category === "Mains"},
-  {key:"dessert",   label:"Dessert",   title:"For dessert",   test:r => r.category === "Desserts" || r.category === "Baking"}
+  {key:"dessert",   label:"Dessert",   title:"For dessert",   test:r => r.category === "Desserts" || r.category === "Baking"},
+  {key:"vegetarian", label:"Vegetarian", title:"Vegetarian dishes", cls:"diet-veg",   test:r => traits(r).veg},
+  {key:"vegan",      label:"Vegan",      title:"Vegan dishes",      cls:"diet-vegan", test:r => r.diet === "Vegan" || (traits(r).veg && !traits(r).allergens.some(a => a === "Dairy" || a === "Egg") && !/honey|gelatin/i.test((r.ingredients || []).join(" ")))}
 ];
 const QUIZ = [
   {key:"over30",  title:"Worth the wait: over 30 minutes", test:r => r.time > 30},
@@ -1814,7 +1821,7 @@ function renderHome(){
         <span class="eyebrow-s">${esc(today)}</span>
         <h1><span class="hello" role="button" tabindex="0" aria-label="Hello! Tap to change its colour">Hello!</span> What are you in the mood for today?</h1>
         <div class="mood-chips" role="group" aria-label="Food mood">${MOODS.map(m => `<button class="mchip" type="button" data-mood="${m.key}" aria-pressed="${state.mood === m.key}">${faceSVG(m.shape, m.color)}<span>${m.label}</span></button>`).join("")}</div>
-        <div class="mood-chips meal-chips" role="group" aria-label="Meal">${MEALS.map(m => `<button class="mchip meal-chip" type="button" data-mood="${m.key}" aria-pressed="${state.mood === m.key}">${m.label}</button>`).join("")}</div>
+        <div class="mood-chips meal-chips" role="group" aria-label="Meal">${MEALS.map(m => `<button class="mchip meal-chip${m.cls ? " " + m.cls : ""}" type="button" data-mood="${m.key}" aria-pressed="${state.mood === m.key}">${m.label}</button>`).join("")}</div>
         <div class="mood-chips kitchen-chips" role="group" aria-label="Kitchen">${KITCHENS.map(k => `<button class="mchip kchip" type="button" data-mood="k:${k.key}" aria-pressed="${state.mood === "k:" + k.key}" style="background-color:var(${kitchenColor(k.key)})">${esc(k.name)}</button>`).join("")}</div>
       </section>
     </section>
