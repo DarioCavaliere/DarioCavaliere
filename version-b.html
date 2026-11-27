@@ -2125,10 +2125,10 @@ function paintDialResults(){
   ["time", "kcal"].forEach(k => { const w = document.getElementById("wrap-" + k); if (w) w.toggleAttribute("data-off", !dialOn(k)); });
   document.querySelectorAll(".seg [data-mode]").forEach(b => b.setAttribute("aria-checked", b.dataset.mode === state.dialMode));
   const box = document.getElementById("timeResults"); if (!box) return;
-  const shown = state.timeAll ? list : list.slice(0, 8);
+  const shown = state.timeAll ? list : list.slice(0, 6);   // at most 6 under the dials, to keep the page short
   box.innerHTML = n ? `<div class="grid">${shown.map(cardHTML).join("")}</div>
-    ${n > 8 ? `<div class="look-actions"><button class="btn" type="button" id="timeAll">${state.timeAll ? "Show fewer" : `Show all ${n}`}</button></div>` : ""}` : "";
-  const ta = document.getElementById("timeAll"); if (ta) ta.onclick = () => { state.timeAll = !state.timeAll; paintDialResults(); };
+    ${n > 6 ? `<div class="look-actions"><button class="btn" type="button" id="timeAll">${state.timeAll ? "Show fewer" : `Show all ${n}`}</button></div>` : ""}` : "";
+  const ta = document.getElementById("timeAll"); if (ta) ta.onclick = () => { const was = state.timeAll; state.timeAll = !state.timeAll; paintDialResults(); if (was) box.scrollIntoView({block: "nearest", behavior: "smooth"}); };
 }
 /* touch feedback while turning a dial: a light tap on every step, a firmer one at either end.
    Android uses the vibration API; iPhone (Safari 18+) gets its tap from toggling a hidden switch. */
