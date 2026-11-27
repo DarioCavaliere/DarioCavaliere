@@ -772,6 +772,11 @@ a,button,label,[role="button"],[role="checkbox"]{-webkit-tap-highlight-color:tra
   .look-tile:hover .look-art,.look-tile:hover .look-art.look-box{transform:none!important;box-shadow:none!important}
   .btn:hover,.chip:hover,.mchip:hover,.fav:hover{transform:none!important;box-shadow:none!important}
 }
+/* scroll reveal: on the first visit to the home page, boxes below the fold fade and rise in as you scroll to them */
+.rv{opacity:0;transform:translateY(26px);transition:opacity .7s cubic-bezier(.2,.7,.2,1),transform .7s cubic-bezier(.2,.7,.2,1);transition-delay:var(--rvd,0s)}
+.rv.rv-in{opacity:1;transform:none}
+.intro .rv{animation:none!important}
+@media (prefers-reduced-motion:reduce){.rv{opacity:1;transform:none;transition:none}}
 footer{color:var(--ink)}
 .public #shareBtn,.public .nav-right[href="#share"]{display:none!important}
 [hidden]{display:none!important}
@@ -3170,6 +3175,36 @@ const Hero = (() => {
   return {show, hide};
 })();
 
+/* scroll reveal, first visit only: anything on the home page that starts below the screen fades in when you scroll to it.
+   Boxes already on screen keep the opening animation; once you leave the home page, it switches off. */
+(() => {
+  if (!("IntersectionObserver" in window) || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const SEL = ".mood-hero > *, .mood-results .section-h, .mood-results .grid > *, .bento > *, .kt-home, #view > .section-h, #view > .grid > *, .look-grid > *, #view > .look-actions, #view > .chips, footer";
+  const isHome = () => { const h = location.hash.slice(1); return !h || h === "moods" || h === "kitchenHome"; };
+  let on = isHome(), batch = 0, batchT = 0;
+  const io = new IntersectionObserver(entries => {
+    for (const e of entries){
+      if (!e.isIntersecting) continue;
+      const el = e.target; io.unobserve(el);
+      el.style.setProperty("--rvd", Math.min(batch++, 6) * 0.07 + "s");
+      el.classList.add("rv-in");
+      el.addEventListener("transitionend", () => { el.classList.remove("rv", "rv-in"); el.style.removeProperty("--rvd"); }, {once: true});
+    }
+    clearTimeout(batchT); batchT = setTimeout(() => { batch = 0; }, 120);
+  }, {rootMargin: "0px 0px -8% 0px", threshold: 0.08});
+  const arm = () => {
+    if (!on) return;
+    const vh = innerHeight;
+    document.querySelectorAll(SEL).forEach(el => {
+      if (el.dataset.rv) return; el.dataset.rv = "1";
+      if (el.getBoundingClientRect().top < vh) return;   // already on screen or scrolled past: leave it alone
+      el.classList.add("rv"); io.observe(el);
+    });
+  };
+  new MutationObserver(() => requestAnimationFrame(arm)).observe(document.getElementById("view"), {childList: true});
+  addEventListener("hashchange", () => { if (!isHome()){ on = false; io.disconnect(); document.querySelectorAll(".rv").forEach(el => el.classList.remove("rv", "rv-in")); } });
+  requestAnimationFrame(arm);
+})();
 window.addEventListener("hashchange", route);
 route();
 
