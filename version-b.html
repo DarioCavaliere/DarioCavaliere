@@ -577,7 +577,9 @@ main .look-grid{grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:18
 .mchip svg{border-radius:50%}
 .mchip.kchip{background-image:none;box-shadow:none;border:var(--b-line);font-weight:600}
 .mchip.meal-chip{padding:9px 20px}
-.mchip.meal-chip.diet-veg{background:#d8f26e;color:#161616}
+.mchip.meal-chip.diet-veg,.chip.diet-veg,.chip.diet-veg:hover{background:#d8f26e;color:#161616}
+.chip.diet-vegan,.chip.diet-vegan:hover{background:#4f9a45;color:#fff}
+.chip.diet-veg[aria-pressed="true"],.chip.diet-vegan[aria-pressed="true"]{background:#161616;color:#fff}
 .mchip.meal-chip.diet-vegan{background:#4f9a45;color:#fff}
 .mchip.meal-chip.diet-veg:hover{background:#d8f26e}
 .mchip.meal-chip.diet-vegan:hover{background:#4f9a45}
@@ -1963,7 +1965,8 @@ const reduceMotion = () => matchMedia("(prefers-reduced-motion: reduce)").matche
 /* ---------- views ---------- */
 function renderHome(){
   const q = state.q.trim().toLowerCase();
-  const match = r => (state.cat === "All" || r.category === state.cat) &&
+  const dietSel = MEALS.find(m => m.label === state.cat && m.cls);
+  const match = r => (state.cat === "All" || (dietSel ? dietSel.test(r) : r.category === state.cat)) &&
     (!q || [r.title, r.summary, r.region, kitchenOf(r.cuisine)?.name, ...(r.ingredients||[])].join(" ").toLowerCase().includes(q));
   const community = state.community.filter(match), house = HOUSE.filter(match);
   const card = cardHTML;
@@ -2034,7 +2037,7 @@ function renderHome(){
     <div class="look-grid">${lookTiles(shuffled().slice(0, 12))}</div>
     <div class="look-actions"><a class="btn" href="#look">See every dish</a></div>
     <div class="section-h"><h3>House recipes</h3><span>${house.length} recipe${house.length===1?"":"s"}</span></div>
-    <div class="chips" role="group" aria-label="Category" style="margin-top:4px">${CATS.map(c => `<button class="chip" data-cat="${c}" aria-pressed="${c===state.cat}">${c}</button>`).join("")}</div>
+    <div class="chips" role="group" aria-label="Category" style="margin-top:4px">${CATS.map(c => `<button class="chip" data-cat="${c}" aria-pressed="${c===state.cat}">${c}</button>`).join("")}${MEALS.filter(m => m.cls).map(m => `<button class="chip ${m.cls}" data-cat="${m.label}" aria-pressed="${m.label===state.cat}">${m.label}</button>`).join("")}</div>
     <div class="status">${esc(status)}</div>
     <div class="grid">${house.length ? (q || state.cat !== "All" || state.showAll ? house : house.slice(0, 12)).map(card).join("") : `<div class="empty">No house recipes match that search.</div>`}</div>
     ${!(q || state.cat !== "All" || state.showAll) && house.length > 12 ? `<div class="look-actions"><button class="btn" type="button" id="showAll">Show all ${house.length} house recipes</button></div>` : ""}`;
