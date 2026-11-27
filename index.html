@@ -764,6 +764,14 @@ main .look-grid{grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:18
 .kt-miss.ok{color:#161616;font-weight:600}
 .kt-addmiss{padding:7px 14px;font-size:.84rem;margin-top:4px}
 .kt-addmiss[disabled]{opacity:1;background:var(--b-lime)}
+/* mobile tap fixes: no grey tap rectangle, keep round/boxed photos clipped while a card animates (iOS Safari), and no sticky hover lift after a tap */
+a,button,label,[role="button"],[role="checkbox"]{-webkit-tap-highlight-color:transparent}
+.art,.ph-clip,.look-art,.look-box,.hero-box,.sl-rimg,.kt-img,.sl-rec,.kt-card{isolation:isolate;-webkit-mask-image:-webkit-radial-gradient(white,black);mask-image:radial-gradient(white,black)}
+@media (hover:none){
+  .card:hover,a.tile:hover,.kitchen:hover,.kt-card:hover,.pill:hover{transform:none!important;box-shadow:none!important}
+  .look-tile:hover .look-art,.look-tile:hover .look-art.look-box{transform:none!important;box-shadow:none!important}
+  .btn:hover,.chip:hover,.mchip:hover,.fav:hover{transform:none!important;box-shadow:none!important}
+}
 footer{color:var(--ink)}
 .public #shareBtn,.public .nav-right[href="#share"]{display:none!important}
 [hidden]{display:none!important}

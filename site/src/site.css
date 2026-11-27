@@ -74,3 +74,7 @@ h1,h2,h3{font-family:var(--display);font-weight:800;letter-spacing:-.01em;line-h
 .foot{margin-top:56px;font-size:.88rem;opacity:.9}
 .foot a{font-weight:600}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+/* mobile tap fixes (see the app): no grey tap rectangle, photos stay clipped while cards animate, no sticky hover after a tap */
+a,button{-webkit-tap-highlight-color:transparent}
+.hero,.card{isolation:isolate;-webkit-mask-image:-webkit-radial-gradient(white,black);mask-image:radial-gradient(white,black)}
+@media (hover:none){.card:hover,.btn:hover,.nav a:hover{transform:none;box-shadow:none}}
