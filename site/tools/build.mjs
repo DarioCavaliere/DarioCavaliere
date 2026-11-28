@@ -213,6 +213,7 @@ ${recipes.map(r => `  <url><loc>${esc(abs(r.url))}</loc><lastmod>${today}</lastm
 `);
 write("site.webmanifest", JSON.stringify({ name: cfg.siteName, short_name: cfg.siteName, description: cfg.description, start_url: "/", display: "standalone", background_color: "#a48cf4", theme_color: "#a48cf4",
   icons: [{ src: "/icon-192.png", sizes: "192x192", type: "image/png" }, { src: "/icon-512.png", sizes: "512x512", type: "image/png" }] }, null, 2));
-write("CNAME", new URL(BASE).hostname + "\n");
+write("CNAME", new URL(BASE).hostname + "\n");   // GitHub Pages only; Cloudflare Pages ignores it
 write(".nojekyll", "");
+write("_headers", "/*\n  X-Content-Type-Options: nosniff\n  Referrer-Policy: strict-origin-when-cross-origin\n/assets/*\n  Cache-Control: public, max-age=2592000\n/img/*\n  Cache-Control: public, max-age=2592000\n");   // Cloudflare Pages headers
 console.log(`Built ${recipes.length} recipe pages for ${BASE} into ${path.relative(ROOT, DIST)}`);

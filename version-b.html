@@ -807,6 +807,9 @@ a,button,label,[role="button"],[role="checkbox"]{-webkit-tap-highlight-color:tra
 .ct-item{border-top:1.5px dashed rgba(22,22,22,.18);padding:12px 0}
 .ct-item p{margin:0;white-space:pre-wrap}
 .ct-meta{font-size:.8rem;color:#3b3346;margin-bottom:4px!important}
+/* recipe cards: the round photo always sits at the same height, top-aligned with the text, whatever the title length */
+.card .card-head{align-items:flex-start}
+.card .card-head .thumb{margin-top:4px}
 footer{color:var(--ink)}
 .public #shareBtn,.public .nav-right[href="#share"]{display:none!important}
 [hidden]{display:none!important}
