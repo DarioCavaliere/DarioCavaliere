@@ -2781,13 +2781,13 @@ function renderMenu(){
     : `<div class="m-acct"><span class="m-avatar">${ICON.user}</span><div><b>${window.DADO_PUBLIC ? "Your kitchen" : "Browsing as a guest"}</b><small>${window.DADO_PUBLIC ? "Favourites, your shopping list and your ingredients are saved in this browser." : "Sign in to Claude to log in here. Until then, favourites are saved in this browser only."}</small></div></div>`;
   menuPanel.innerHTML = `
     <section class="m-sec"><h2 class="m-h">Account</h2>${acct}</section>
-    <section class="m-sec"><a class="btn m-contact" href="#contact">✉&nbsp; Contact us</a></section>
     <section class="m-sec"><div class="m-row"><h2 class="m-h">Favourites</h2><span class="m-count">${favList.length}</span></div>
       ${favList.length ? `<ul class="m-list">${favList.slice(0, 6).map(r => `<li><a href="${recipeHref(r)}">${dishArt(r, "m-thumb")}<span>${esc(r.title)}</span></a></li>`).join("")}</ul><a class="m-more" href="#saved">${favList.length > 6 ? `See all ${favList.length} favourites` : "Open favourites"}</a>` : `<p class="m-empty">Tap the heart on any recipe to save it here.</p>`}
     </section>
     <section class="m-sec"><div class="m-row"><h2 class="m-h">Recent searches</h2>${prefs.searches.length ? `<button class="linkish" type="button" id="clearSearches">Clear</button>` : ""}</div>
       ${prefs.searches.length ? `<div class="m-chips">${prefs.searches.map(s => `<button class="chip" type="button" data-search="${esc(s)}">${esc(s)}</button>`).join("")}</div>` : `<p class="m-empty">Your searches will show up here.</p>`}
-    </section>`;
+    </section>
+    <section class="m-sec"><a class="btn m-contact" href="#contact">✉&nbsp; Contact us</a></section>`;
 }
 function setMenu(open){
   menuPanel.hidden = !open; menuBtn.setAttribute("aria-expanded", open);
