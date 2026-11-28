@@ -78,3 +78,7 @@ h1,h2,h3{font-family:var(--display);font-weight:800;letter-spacing:-.01em;line-h
 a,button{-webkit-tap-highlight-color:transparent}
 .hero,.card{isolation:isolate;-webkit-mask-image:-webkit-radial-gradient(white,black);mask-image:radial-gradient(white,black)}
 @media (hover:none){.card:hover,.btn:hover,.nav a:hover{transform:none;box-shadow:none}}
+/* allergen badges */
+.alg-h{align-self:center;font-size:.72rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;margin-left:4px}
+.tag.alg{display:inline-flex;align-items:center;gap:6px;padding:3px 12px 3px 3px}
+.tag.alg img{width:24px;height:24px;border-radius:50%}

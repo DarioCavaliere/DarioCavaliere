@@ -28,6 +28,7 @@ for (const r of recipes){
   let s = r.slug || slugify(r.title), i = 2; while (seen.has(s)) s = `${r.slug || slugify(r.title)}-${i++}`;
   seen.add(s); r.slug = s; r.url = `/recipes/${s}/`;
 }
+const ALG = {Gluten:"gluten",Dairy:"milk",Egg:"egg",Nuts:"treenuts",Peanuts:"peanut",Soy:"soy",Fish:"fish",Crustaceans:"crustaceans",Molluscs:"molluscs",Sesame:"sesame",Celery:"celery",Mustard:"mustard",Sulphites:"sulphites",Lupin:"lupin"};
 const KITCHEN_ORDER = ["Italian", "Japanese", "Mexican", "Indian", "Middle Eastern", ""];
 const kitchenSlug = k => k ? slugify(k) : "everyday";
 const kitchenLabel = k => k || "Everyday";
@@ -119,7 +120,7 @@ ${topbar()}
     <p class="eyebrow">${esc([r.course || r.category, r.kitchen].filter(Boolean).join(" · "))}</p>
     <h1>${esc(r.title)}</h1>
     <p class="lede">${esc(r.summary)}</p>
-    ${tags.length || r.allergens.length ? `<p class="tags">${tags.map(t => `<span class="tag">${esc(t)}</span>`).join("")}${r.allergens.length ? `<span class="tag soft">Contains: ${esc(r.allergens.join(", ").toLowerCase())}</span>` : ""}</p>` : ""}
+    ${tags.length || r.allergens.length ? `<p class="tags">${tags.map(t => `<span class="tag">${esc(t)}</span>`).join("")}${r.allergens.length ? `<span class="alg-h">Contains</span>${r.allergens.map(a => `<span class="tag soft alg">${ALG[a] ? `<img src="/img/allergens/${ALG[a]}.png" alt="" width="24" height="24">` : ""}${esc(a)}</span>`).join("")}` : ""}</p>` : ""}
     <dl class="facts">${facts.map(([k, v]) => `<div><dt>${esc(k)}</dt><dd>${esc(v)}</dd></div>`).join("")}</dl>
     <div class="actions"><button class="btn primary" type="button" id="addList" data-id="${esc(r.id)}" data-serves="${r.serves}">Add to shopping list</button><a class="btn" href="/#list" id="viewList" hidden>Open your list</a><button class="btn" type="button" id="shareIt" data-url="${esc(abs(r.url))}" data-title="${esc(r.title)}">Share recipe</button></div>
     <p class="msg" id="msg" role="status"></p>
@@ -192,6 +193,8 @@ write("recipes/index.html", recipesIndex());
 mkdirSync(path.join(DIST, "assets/food"), { recursive: true });
 for (const f of readdirSync(path.join(ROOT, "assets/food"))) if (f.endsWith(".webp")) copyFileSync(path.join(ROOT, "assets/food", f), path.join(DIST, "assets/food", f));
 for (const f of ["site.css"]) write(`css/${f}`, readFileSync(path.join(SITE, "src", f)));
+mkdirSync(path.join(DIST, "img/allergens"), { recursive: true });
+for (const k of Object.values(ALG)) copyFileSync(path.join(ROOT, "assets/allergens", k + ".png"), path.join(DIST, "img/allergens", k + ".png"));
 write("js/recipe.js", readFileSync(path.join(SITE, "src/recipe.js")));
 write("404.html", head({ title: `Page not found – ${cfg.siteName}`, description: "This page isn't here. Find a recipe instead.", url: "/404.html", image: `/img/og/${cfg.homeImage}.jpg`, imageAlt: cfg.siteName })
   .replace('content="index,follow,max-image-preview:large"', 'content="noindex"') + `\n<body><div class="wrap">${topbar()}<main class="rhead" style="padding:60px 0"><h1>We couldn't find that page</h1><p class="lede">It may have moved. Try <a href="/recipes/">all recipes</a> or the <a href="/">home page</a>.</p></main>${footer()}</div></body></html>\n`);
