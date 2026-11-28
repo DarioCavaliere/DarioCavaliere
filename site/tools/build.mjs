@@ -71,7 +71,7 @@ ${extra}</head>`;
 }
 const topbar = () => `<header class="top"><a class="brand" href="/" aria-label="${esc(cfg.siteName)} home"><img src="/img/logo.png" alt="${esc(cfg.siteName)}" width="120" height="78"><span>${esc(cfg.tagline)}</span></a>
 <nav class="nav"><a href="/recipes/">All recipes</a><a href="/#fridge">What's in your kitchen?</a><a class="pill" href="/#list">Shopping list</a></nav></header>`;
-const footer = () => `<footer class="foot"><p><a href="/">${esc(cfg.siteName)}</a> · ${esc(cfg.tagline)} · <a href="/recipes/">All recipes</a></p>
+const footer = () => `<footer class="foot"><p><a href="/">${esc(cfg.siteName)}</a> · ${esc(cfg.tagline)} · <a href="/recipes/">All recipes</a> · <a href="/#contact">Contact</a></p>
 <div class="fine">
     <p><b>Good to know.</b> Recipes on Dado are for general information and home cooking only. Calories, diet labels (vegetarian, vegan, healthy) and allergen icons are worked out automatically from the ingredient list and are estimates, not guarantees. If you have a food allergy, intolerance or a medical or dietary condition, always check product labels and ask a doctor or dietitian before relying on a recipe. Cooking times and temperatures vary between ovens and hobs; make sure food, especially meat, fish and eggs, is cooked safely. Food images are visual representations of the recipe; actual results may vary depending on ingredients, preparation and presentation.</p>
     <p>© ${Math.max(2026, new Date().getFullYear())} Dado · dadofood.com. All rights reserved. Unless stated otherwise, the recipes, text, photos and logo on this site belong to Dado and may not be copied or republished without permission. You're welcome to share links to any recipe.</p>
@@ -180,7 +180,7 @@ function appPage(){
   const site = { "@context": "https://schema.org", "@type": "WebSite", name: cfg.siteName, url: BASE + "/", description: cfg.description };
   const org = { "@context": "https://schema.org", "@type": "Organization", name: cfg.siteName, url: BASE + "/", logo: abs("/icon-512.png") };
   const h = head({ title: `${cfg.siteName} – Easy Recipes for Every Taste & Mood`, description: cfg.description, url: "/", image: `/img/og/${cfg.homeImage}.jpg`, imageAlt: `${cfg.siteName}: ${cfg.tagline}`,
-      extra: ld(site) + ld(org) + `<script>window.DADO_PUBLIC=true;window.DADO_URLS=${JSON.stringify(urls)};</script>\n` })
+      extra: ld(site) + ld(org) + `<script>window.DADO_PUBLIC=true;${cfg.contactEndpoint ? `window.DADO_CONTACT=${JSON.stringify(cfg.contactEndpoint)};` : ""}window.DADO_URLS=${JSON.stringify(urls)};</script>\n` })
     .replace(/<link rel="stylesheet" href="\/css\/site.css">\n/, "")
     .replace(/<\/head>$/, "");
   // the app file starts with its own <title>, description and og:title; drop those so the built ones win

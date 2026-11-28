@@ -51,6 +51,15 @@ At your registrar, add these DNS records:
 
 Then in **Settings → Pages**, enter the domain under **Custom domain**, wait for the DNS check, and tick **Enforce HTTPS**. (GitHub can take up to a day to issue the certificate.) It's worth also verifying the domain under your GitHub account's **Settings → Pages**, which stops anyone else claiming it.
 
+### 5b. Switch on the contact form
+The Contact page (menu → Contact us) sends messages through a form service, so your email address never appears on the site.
+1. Create a free account at [Formspree](https://formspree.io) (or a similar service such as Web3Forms) with the email address where you want to receive messages.
+2. Create a form and copy its endpoint, e.g. `https://formspree.io/f/abcdwxyz`.
+3. Paste it into `site/site.config.json` as `"contactEndpoint"`, then run the deploy workflow again.
+4. Send yourself a test message from the live site. (Formspree asks you to confirm the first one by email.)
+
+Until then the form politely says it isn't connected yet.
+
 ### 6. Tell Google
 1. Open [Google Search Console](https://search.google.com/search-console), add a **Domain** property for your domain and verify it with the DNS TXT record it gives you.
 2. Under **Sitemaps**, submit `https://<your-domain>/sitemap.xml`.
