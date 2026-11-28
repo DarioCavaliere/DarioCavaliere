@@ -8,5 +8,14 @@
   "published": "2026-11-27",
   "homeImage": "h-carbonara",
   "contactEndpoint": "",
-  "_contactEndpointHelp": "Paste the Formspree (or similar) form endpoint here, e.g. https://formspree.io/f/abcdwxyz. Messages are emailed to you; your address is never shown on the site."
+  "_contactEndpointHelp": "Paste the Formspree (or similar) form endpoint here, e.g. https://formspree.io/f/abcdwxyz. Messages are emailed to you; your address is never shown on the site.",
+  "firebase": {
+    "apiKey": "AIzaSyD1mud8WVmggRdt1HF8eDQhKUowZGCIfsI",
+    "authDomain": "dadofood-11d07.firebaseapp.com",
+    "projectId": "dadofood-11d07",
+    "storageBucket": "dadofood-11d07.firebasestorage.app",
+    "messagingSenderId": "710806478973",
+    "appId": "1:710806478973:web:9ec03cec479f87abae5114"
+  },
+  "contactEmail": "hello@dadofood.com"
 }

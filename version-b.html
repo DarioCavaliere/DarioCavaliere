@@ -810,7 +810,19 @@ a,button,label,[role="button"],[role="checkbox"]{-webkit-tap-highlight-color:tra
 /* recipe cards: the round photo always sits at the same height, top-aligned with the text, whatever the title length */
 .card .card-head{align-items:flex-start}
 .card .card-head .thumb{margin-top:4px}
+/* sign-in (public site) */
+.fb-google{width:100%;justify-content:center;gap:10px;background:#fff}
+.fb-google svg{width:20px;height:20px}
+.fb-email{display:flex;gap:8px}
+.fb-email input{flex:1;min-width:0;width:0;padding:11px 14px;border:var(--b-line);border-radius:999px;background:#fff;color:#161616;font-size:.95rem}
+.fb-email .btn{padding:10px 14px;font-size:.86rem;white-space:nowrap}
+.fb-msg{margin:0;font-size:.86rem}
+.fb-small{margin:0;font-size:.76rem;color:#3b3346}
+.fb-row{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.fb-del{font-size:.8rem;color:#b4362a}
 footer{color:var(--ink)}
+.pub-only{display:none}
+.public .pub-only{display:inline}
 .public #shareBtn,.public .nav-right[href="#share"]{display:none!important}
 [hidden]{display:none!important}
 .b-badge{position:fixed;left:14px;bottom:14px;z-index:60;background:#161616;color:#fff;border-radius:999px;padding:7px 14px;font:600 .78rem var(--body)}
@@ -848,7 +860,7 @@ footer{color:var(--ink)}
   <footer><p class="legend" id="legend"></p>
   <div class="fine">
     <p><b>Good to know.</b> Recipes on Dado are for general information and home cooking only. Calories, diet labels (vegetarian, vegan, healthy) and allergen icons are worked out automatically from the ingredient list and are estimates, not guarantees. If you have a food allergy, intolerance or a medical or dietary condition, always check product labels and ask a doctor or dietitian before relying on a recipe. Cooking times and temperatures vary between ovens and hobs; make sure food, especially meat, fish and eggs, is cooked safely. Food images are visual representations of the recipe; actual results may vary depending on ingredients, preparation and presentation.</p>
-    <p>© <span class="fine-year">2026</span> Dado · dadofood.com. All rights reserved. Unless stated otherwise, the recipes, text, photos and logo on this site belong to Dado and may not be copied or republished without permission. You're welcome to share links to any recipe.</p>
+    <p>© <span class="fine-year">2026</span> Dado · dadofood.com. All rights reserved. Unless stated otherwise, the recipes, text, photos and logo on this site belong to Dado and may not be copied or republished without permission. You're welcome to share links to any recipe.<span class="pub-only"> · <a href="/privacy/">Privacy policy</a> · <a href="#contact">Contact</a></span></p>
   </div>
   </footer>
 </div>
@@ -2558,7 +2570,7 @@ async function renderContact(){
         <div class="field"><label for="ctMsg">Message</label><textarea id="ctMsg" maxlength="3000" rows="7" required placeholder="Write your message here"></textarea></div>
         <input type="text" id="ctHp" name="_gotcha" tabindex="-1" autocomplete="off" class="vh" aria-hidden="true">
         <div class="form-actions"><button class="btn primary" type="submit" id="ctSend">Send message</button><span class="msg" id="ctMsgOut" role="status"></span></div>
-        <p class="ct-note">Your message is only seen by the Dado team. We never show or share anyone's email address.</p>
+        <p class="ct-note">Your message is only seen by the Dado team. We never show or share anyone's email address. See our <a href="/privacy/">privacy policy</a>.</p>
       </form>
       ${owner ? `<div class="sl-panel"><div class="sl-toolbar"><h3>Inbox</h3><span class="sl-count" id="ctCount">Loading…</span></div><div id="ctInbox"></div></div>` : ""}
     </section>`;
@@ -2572,7 +2584,9 @@ async function renderContact(){
     if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){ out.className = "msg err"; out.textContent = "That email address doesn't look right."; return; }
     contactSending = true; btn.disabled = true; out.textContent = "Sending…";
     try {
-      if (window.DADO_CONTACT){
+      if (window.DADO_FIREBASE){
+        await fbSendMessage({name, email, text, page: location.href});
+      } else if (window.DADO_CONTACT){
         const r = await fetch(window.DADO_CONTACT, {method: "POST", headers: {"Content-Type": "application/json", "Accept": "application/json"},
           body: JSON.stringify({name, email, message: text, page: location.href, _subject: "New message from dadofood.com"})});
         if (!r.ok) throw new Error("send failed");
@@ -2779,9 +2793,9 @@ const menuBtn = document.getElementById("menuBtn"), menuPanel = document.getElem
 function renderMenu(){
   if (!menuPanel) return;
   const all = allRecipes(), favList = [...prefs.favs].map(id => all.find(r => r.id === id)).filter(Boolean);
-  const acct = me && me.id
+  const acct = fbAccountHTML() || (me && me.id
     ? `<div class="m-acct"><img src="${esc(me.avatarUrl)}" alt="" width="40" height="40"><div><b>${esc(me.name || "Signed in")}</b><small>Signed in with your Claude account. Your favourites follow you to other devices.</small></div></div>`
-    : `<div class="m-acct"><span class="m-avatar">${ICON.user}</span><div><b>${window.DADO_PUBLIC ? "Your kitchen" : "Browsing as a guest"}</b><small>${window.DADO_PUBLIC ? "Favourites, your shopping list and your ingredients are saved in this browser." : "Sign in to Claude to log in here. Until then, favourites are saved in this browser only."}</small></div></div>`;
+    : `<div class="m-acct"><span class="m-avatar">${ICON.user}</span><div><b>${window.DADO_PUBLIC ? "Your kitchen" : "Browsing as a guest"}</b><small>${window.DADO_PUBLIC ? "Favourites, your shopping list and your ingredients are saved in this browser." : "Sign in to Claude to log in here. Until then, favourites are saved in this browser only."}</small></div></div>`);
   menuPanel.innerHTML = `
     <section class="m-sec"><h2 class="m-h">Account</h2>${acct}</section>
     <section class="m-sec"><div class="m-row"><h2 class="m-h">Favourites</h2><span class="m-count">${favList.length}</span></div>
@@ -2817,6 +2831,111 @@ function renderSaved(){
     <div class="grid">${list.length ? list.map(cardHTML).join("") : `<div class="empty">Nothing saved yet. Tap the heart on any recipe to keep it here.</div>`}</div>`;
   window.scrollTo(0, 0);
 }
+/* ---------- accounts on the public website: Firebase sign-in (Google or an emailed link) ----------
+   Only runs on dadofood.com (window.DADO_FIREBASE is written by the site build). Each person's favourites,
+   shopping list and kitchen ingredients live in Firestore at users/<uid>; the security rules let only them
+   read or write it. Without an account everything keeps working in the browser, as before. */
+const FB = {ready: false, user: null, err: "", busy: false, sent: ""};
+const FB_V = "10.14.1", FB_CDN = "https://www.gstatic.com/firebasejs/" + FB_V + "/";
+let fbAuth = null, fbStore = null, fbApi = null, fbUnsub = null;
+function fbAccountHTML(){
+  if (!window.DADO_FIREBASE) return null;
+  if (!FB.ready) return `<div class="m-acct"><span class="m-avatar">${ICON.user}</span><div><b>Your kitchen</b><small>${FB.err ? "Sign-in isn't available right now. Your favourites are saved in this browser." : "Loading sign-in…"}</small></div></div>`;
+  const u = FB.user;
+  if (u) return `<div class="m-acct">${u.photoURL ? `<img src="${esc(u.photoURL)}" alt="" width="40" height="40" referrerpolicy="no-referrer">` : `<span class="m-avatar">${ICON.user}</span>`}<div><b>${esc(u.displayName || "Signed in")}</b><small>${esc(u.email || "")}<br>Your favourites, shopping list and ingredients follow you to every device.</small></div></div>
+      <div class="fb-row"><button class="btn" type="button" data-fb="signout">Sign out</button><button class="linkish fb-del" type="button" data-fb="delete">Delete my account</button></div>`;
+  return `<div class="m-acct"><span class="m-avatar">${ICON.user}</span><div><b>Sign in to Dado</b><small>Keep your favourites, shopping list and ingredients on every device. Free, no password needed.</small></div></div>
+      <button class="btn fb-google" type="button" data-fb="google"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#4285F4" d="M22.6 12.3c0-.8-.1-1.5-.2-2.3H12v4.3h5.9a5 5 0 0 1-2.2 3.3v2.7h3.6c2.1-1.9 3.3-4.8 3.3-8z"/><path fill="#34A853" d="M12 23c3 0 5.5-1 7.3-2.7l-3.6-2.7c-1 .7-2.2 1.1-3.7 1.1-2.9 0-5.3-1.9-6.2-4.6H2.1v2.8A11 11 0 0 0 12 23z"/><path fill="#FBBC05" d="M5.8 14.1a6.6 6.6 0 0 1 0-4.2V7.1H2.1a11 11 0 0 0 0 9.8z"/><path fill="#EA4335" d="M12 5.4c1.6 0 3.1.6 4.2 1.7l3.2-3.2A11 11 0 0 0 2.1 7.1l3.7 2.8C6.7 7.2 9.1 5.4 12 5.4z"/></svg>Continue with Google</button>
+      <form class="fb-email" data-fbform autocomplete="on"><input type="email" data-fbemail required placeholder="Your email address" aria-label="Your email address" autocomplete="email" inputmode="email"><button class="btn primary" type="submit">Email me a link</button></form>
+      ${FB.sent ? `<p class="fb-msg">Check your inbox: we sent a sign-in link to <b>${esc(FB.sent)}</b>. Open it on this device.</p>` : ""}
+      ${FB.busy ? `<p class="fb-msg">One moment…</p>` : ""}
+      <p class="fb-small">By signing in you agree to our <a href="/privacy/">privacy policy</a>.</p>`;
+}
+function fbSay(msg){ FB.sent = ""; FB.err = msg; renderMenu(); try { toast(msg); } catch {} }
+/* combine what this browser had before signing in with what the account already holds */
+function fbMerge(remote, local){
+  const out = {...remote};
+  out.favs = [...new Set([...(remote.favs || []), ...(local.favs || [])])];
+  out.searches = [...new Set([...(remote.searches || []), ...(local.searches || [])])].slice(0, 8);
+  out.kitchen = [...new Set([...(remote.kitchen || []), ...(local.kitchen || [])])].slice(0, 40);
+  const rl = remote.list && typeof remote.list === "object" ? remote.list : null, ll = local.list;
+  if (!rl || !(rl.recipes || []).length && !(rl.extras || []).length) out.list = ll;
+  else if (ll){
+    const have = new Set((rl.recipes || []).map(x => x.id));
+    out.list = {...rl, recipes: [...(rl.recipes || []), ...(ll.recipes || []).filter(x => !have.has(x.id))], extras: [...(rl.extras || []), ...(ll.extras || [])].slice(0, 200)};
+  }
+  return out;
+}
+async function fbStart(){
+  if (!window.DADO_FIREBASE || !window.DADO_PUBLIC) return;
+  try {
+    const [appM, authM, fsM] = await Promise.all([import(FB_CDN + "firebase-app.js"), import(FB_CDN + "firebase-auth.js"), import(FB_CDN + "firebase-firestore.js")]);
+    fbApi = {...authM, ...fsM};
+    const app = appM.initializeApp(window.DADO_FIREBASE);
+    fbAuth = authM.getAuth(app); fbStore = fsM.getFirestore(app);
+    fbAuth.languageCode = navigator.language || "en";
+    FB.ready = true; renderMenu();
+    // finishing an emailed sign-in link
+    if (authM.isSignInWithEmailLink(fbAuth, location.href)){
+      let email = ""; try { email = localStorage.getItem("dado-signin-email") || ""; } catch {}
+      if (!email) email = prompt("To finish signing in, please confirm your email address") || "";
+      if (email){
+        try { await authM.signInWithEmailLink(fbAuth, email, location.href); try { localStorage.removeItem("dado-signin-email"); } catch {} toast("You're signed in. Welcome to Dado!"); }
+        catch { fbSay("That sign-in link has expired or was already used. Please ask for a new one."); }
+      }
+      history.replaceState(null, "", location.pathname + (location.hash.includes("apiKey") ? "" : location.hash));
+    }
+    authM.onAuthStateChanged(fbAuth, async u => {
+      FB.user = u; FB.busy = false; if (fbUnsub){ fbUnsub(); fbUnsub = null; }
+      if (!u){ prefsRef = null; prefsLocalOnly = true; renderMenu(); return; }
+      const ref = fsM.doc(fbStore, "users", u.uid);
+      const local = {favs: [...prefs.favs], searches: prefs.searches, list: prefs.list, kitchen: prefs.kitchen};
+      try {
+        const snap = await fsM.getDoc(ref);
+        const merged = fbMerge(snap.exists() ? snap.data() : {}, local);
+        applyPrefs(merged);
+        prefsRef = {set: body => fsM.setDoc(ref, {...body, updatedAt: fsM.serverTimestamp()})}; prefsLocalOnly = false;
+        savePrefs();
+        fbUnsub = fsM.onSnapshot(ref, s => { if (s.exists() && !s.metadata.hasPendingWrites){ const d = s.data(); delete d.updatedAt; applyPrefs(d); if (location.hash === "#saved") renderSaved(); } });
+      } catch { FB.err = ""; toast("Signed in, but your saved items couldn't sync right now."); }
+      renderMenu();
+    });
+  } catch { FB.err = "unavailable"; renderMenu(); }
+}
+document.addEventListener("click", async e => {
+  const b = e.target.closest("[data-fb]"); if (!b || !fbAuth) return;
+  const act = b.dataset.fb;
+  if (act === "google"){
+    const p = new fbApi.GoogleAuthProvider(); p.setCustomParameters({prompt: "select_account"});
+    try { await fbApi.signInWithPopup(fbAuth, p); setMenu(false); toast("You're signed in. Welcome to Dado!"); }
+    catch (err){ const c = err && err.code || "";
+      if (c === "auth/popup-blocked" || c === "auth/operation-not-supported-in-this-environment") { try { await fbApi.signInWithRedirect(fbAuth, p); } catch { fbSay("Google sign-in didn't open. Please try again."); } }
+      else if (c !== "auth/popup-closed-by-user" && c !== "auth/cancelled-popup-request") fbSay("Google sign-in didn't work. Please try again."); }
+  } else if (act === "signout"){
+    await fbApi.signOut(fbAuth).catch(() => {}); toast("Signed out. Your items stay saved in your account.");
+  } else if (act === "delete"){
+    if (!confirm("Delete your Dado account and everything saved in it? This can't be undone.")) return;
+    try { await fbApi.deleteDoc(fbApi.doc(fbStore, "users", fbAuth.currentUser.uid)); await fbApi.deleteUser(fbAuth.currentUser); toast("Your account and saved items have been deleted."); }
+    catch (err){ fbSay(err && err.code === "auth/requires-recent-login" ? "For your security, please sign out, sign in again, then delete your account." : "Couldn't delete your account right now. Please try again."); }
+  }
+});
+document.addEventListener("submit", async e => {
+  const f = e.target.closest("[data-fbform]"); if (!f || !fbAuth) return;
+  e.preventDefault();
+  const email = f.querySelector("[data-fbemail]").value.trim(); if (!email) return;
+  FB.busy = true; renderMenu();
+  try {
+    await fbApi.sendSignInLinkToEmail(fbAuth, email, {url: location.origin + "/", handleCodeInApp: true});
+    try { localStorage.setItem("dado-signin-email", email); } catch {}
+    FB.busy = false; FB.sent = email; renderMenu();
+  } catch (err){ FB.busy = false; fbSay(err && err.code === "auth/invalid-email" ? "That email address doesn't look right." : "Couldn't send the link right now. Please try again."); }
+});
+/* contact messages go to Firestore (messages/), which only the project owner can read in the Firebase console */
+async function fbSendMessage(data){
+  if (!fbStore) throw new Error("not connected");
+  await fbApi.addDoc(fbApi.collection(fbStore, "messages"), {...data, uid: fbAuth.currentUser ? fbAuth.currentUser.uid : null, at: fbApi.serverTimestamp()});
+}
+fbStart();
 loadLocalPrefs();
 
 /* light / dark switch: remembers the choice in this browser */

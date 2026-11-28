@@ -71,7 +71,7 @@ ${extra}</head>`;
 }
 const topbar = () => `<header class="top"><a class="brand" href="/" aria-label="${esc(cfg.siteName)} home"><img src="/img/logo.png" alt="${esc(cfg.siteName)}" width="120" height="78"><span>${esc(cfg.tagline)}</span></a>
 <nav class="nav"><a href="/recipes/">All recipes</a><a href="/#fridge">What's in your kitchen?</a><a class="pill" href="/#list">Shopping list</a></nav></header>`;
-const footer = () => `<footer class="foot"><p><a href="/">${esc(cfg.siteName)}</a> · ${esc(cfg.tagline)} · <a href="/recipes/">All recipes</a> · <a href="/#contact">Contact</a></p>
+const footer = () => `<footer class="foot"><p><a href="/">${esc(cfg.siteName)}</a> · ${esc(cfg.tagline)} · <a href="/recipes/">All recipes</a> · <a href="/#contact">Contact</a> · <a href="/privacy/">Privacy</a></p>
 <div class="fine">
     <p><b>Good to know.</b> Recipes on Dado are for general information and home cooking only. Calories, diet labels (vegetarian, vegan, healthy) and allergen icons are worked out automatically from the ingredient list and are estimates, not guarantees. If you have a food allergy, intolerance or a medical or dietary condition, always check product labels and ask a doctor or dietitian before relying on a recipe. Cooking times and temperatures vary between ovens and hobs; make sure food, especially meat, fish and eggs, is cooked safely. Food images are visual representations of the recipe; actual results may vary depending on ingredients, preparation and presentation.</p>
     <p>© ${Math.max(2026, new Date().getFullYear())} Dado · dadofood.com. All rights reserved. Unless stated otherwise, the recipes, text, photos and logo on this site belong to Dado and may not be copied or republished without permission. You're welcome to share links to any recipe.</p>
@@ -180,13 +180,44 @@ function appPage(){
   const site = { "@context": "https://schema.org", "@type": "WebSite", name: cfg.siteName, url: BASE + "/", description: cfg.description };
   const org = { "@context": "https://schema.org", "@type": "Organization", name: cfg.siteName, url: BASE + "/", logo: abs("/icon-512.png") };
   const h = head({ title: `${cfg.siteName} – Easy Recipes for Every Taste & Mood`, description: cfg.description, url: "/", image: `/img/og/${cfg.homeImage}.jpg`, imageAlt: `${cfg.siteName}: ${cfg.tagline}`,
-      extra: ld(site) + ld(org) + `<script>window.DADO_PUBLIC=true;${cfg.contactEndpoint ? `window.DADO_CONTACT=${JSON.stringify(cfg.contactEndpoint)};` : ""}window.DADO_URLS=${JSON.stringify(urls)};</script>\n` })
+      extra: ld(site) + ld(org) + `<script>window.DADO_PUBLIC=true;${cfg.contactEndpoint ? `window.DADO_CONTACT=${JSON.stringify(cfg.contactEndpoint)};` : ""}${cfg.firebase ? `window.DADO_FIREBASE=${JSON.stringify(cfg.firebase)};` : ""}window.DADO_URLS=${JSON.stringify(urls)};</script>\n` })
     .replace(/<link rel="stylesheet" href="\/css\/site.css">\n/, "")
     .replace(/<\/head>$/, "");
   // the app file starts with its own <title>, description and og:title; drop those so the built ones win
   app = app.replace(/^\s*<title>[\s\S]*?<\/title>\s*/, "").replace(/<meta name="description"[^>]*>\s*/, "").replace(/<meta property="og:title"[^>]*>\s*/, "");
   if (!app.includes('<section class="hero" id="hero"')) throw new Error("App layout changed: cannot find where the body starts");
   return h + app.replace('<section class="hero" id="hero"', '</head>\n<body>\n<section class="hero" id="hero"') + "\n</body>\n</html>\n";
+}
+
+/* ---------- privacy policy ---------- */
+function privacyPage(){
+  const mail = cfg.contactEmail || "", upd = "28 November 2026";
+  const S = (h, body) => `<section class="panel legal"><h2>${h}</h2>${body}</section>`;
+  return head({ title: `Privacy policy – ${cfg.siteName}`, description: "How Dado handles your data: what we keep when you sign in, what stays in your browser, and how to delete it.", url: "/privacy/", image: `/img/og/${cfg.homeImage}.jpg`, imageAlt: cfg.siteName }) + `
+<body>
+<div class="wrap">
+${topbar()}
+<main class="legal-page">
+  <header class="rhead"><p class="eyebrow">Last updated ${upd}</p><h1>Privacy policy</h1>
+  <p class="lede">Dado (${esc(new URL(BASE).hostname)}) is a recipe website. We keep as little about you as possible, never sell it, and show no ads.</p></header>
+  ${S("Who we are", `<p>Dado is run by its owner as a personal project. For anything about your data, write to <a href="mailto:${esc(mail)}">${esc(mail)}</a> or use the <a href="/#contact">contact form</a>.</p>`)}
+  ${S("Without an account", `<p>You can use everything on Dado without signing in. Your favourites, shopping list, kitchen ingredients, recent searches and light/dark choice are then saved only in your own browser (local storage). They never leave your device, and clearing your browser data removes them.</p>`)}
+  ${S("If you sign in", `<p>You can sign in with Google or with a link sent to your email. We then store:</p>
+    <ul><li>your account details from Google or your email address: name, email address and profile photo, and a technical user ID;</li>
+    <li>what you save on Dado: favourites, shopping list, kitchen ingredients and recent searches, so they follow you to other devices.</li></ul>
+    <p>Sign-in and storage are provided by Google Firebase (Google Ireland Limited, for users in the EU). Your saved items are kept in a database located in the European Union, and security rules let only you read or change them.</p>`)}
+  ${S("Contact messages", `<p>If you send a message through the contact form, we receive your message and, only if you give them, your name and email address, so we can reply. Messages are stored in the same database and only we can read them.</p>`)}
+  ${S("Cookies and tracking", `<p>Dado uses no advertising or analytics cookies and does not track you across sites. Signing in uses Firebase's own storage in your browser to keep you signed in. Pages load fonts from Google Fonts and Firebase's code from Google's servers, which see your IP address as part of delivering them. The site is hosted by Cloudflare, which processes basic technical data (such as IP addresses) to deliver the pages and protect against abuse.</p>`)}
+  ${S("Why we use your data", `<p>We use your data only to provide the features you ask for: signing in, syncing what you save, and answering your messages (your consent and our legitimate interest in running the site). We keep it until you delete your account or ask us to remove it.</p>`)}
+  ${S("Your rights and deleting your data", `<p>You can delete your account and everything saved in it at any time: open the menu (☰), then <b>Delete my account</b>. You can also ask us for a copy of your data, to correct it or to delete it, by writing to <a href="mailto:${esc(mail)}">${esc(mail)}</a>. If you live in the EU or UK you can also complain to your data protection authority.</p>`)}
+  ${S("Children", `<p>Dado is not aimed at children under 16, and we don't knowingly collect their data.</p>`)}
+  ${S("Changes", `<p>If we change this policy, we'll update it on this page and change the date at the top.</p>`)}
+</main>
+${footer()}
+</div>
+</body>
+</html>
+`;
 }
 
 /* ---------- build ---------- */
@@ -203,6 +234,7 @@ for (const k of Object.values(ALG)) copyFileSync(path.join(ROOT, "assets/allerge
 write("js/recipe.js", readFileSync(path.join(SITE, "src/recipe.js")));
 write("404.html", head({ title: `Page not found – ${cfg.siteName}`, description: "This page isn't here. Find a recipe instead.", url: "/404.html", image: `/img/og/${cfg.homeImage}.jpg`, imageAlt: cfg.siteName })
   .replace('content="index,follow,max-image-preview:large"', 'content="noindex"') + `\n<body><div class="wrap">${topbar()}<main class="rhead" style="padding:60px 0"><h1>We couldn't find that page</h1><p class="lede">It may have moved. Try <a href="/recipes/">all recipes</a> or the <a href="/">home page</a>.</p></main>${footer()}</div></body></html>\n`);
+write("privacy/index.html", privacyPage());
 write("robots.txt", `User-agent: *\nAllow: /\n\nSitemap: ${abs("/sitemap.xml")}\n`);
 write("sitemap.xml", `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">

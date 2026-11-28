@@ -87,3 +87,8 @@ a,button{-webkit-tap-highlight-color:transparent}
 .hero-ph figcaption{color:var(--ink);font-weight:600;font-size:.9rem}
 .fine{margin-top:18px;padding-top:14px;border-top:2px solid rgba(22,22,22,.15);display:grid;gap:8px;max-width:820px;font-size:.78rem;line-height:1.55}
 .fine p{margin:0}
+.legal-page{display:grid;gap:16px;max-width:820px}
+.legal h2{font-size:1.1rem;margin-bottom:6px}
+.legal p,.legal li{font-size:.98rem;line-height:1.65}
+.legal p{margin:0 0 8px}
+.legal ul{margin:0 0 8px;padding-left:20px}
