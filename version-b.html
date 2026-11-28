@@ -1947,13 +1947,22 @@ function faceSVG(shape, color){
   }
   return `<svg viewBox="0 0 100 100" aria-hidden="true" focusable="false">${body}${feat}</svg>`;
 }
+/* Healthy: bowls, wraps and high-protein dishes first, then salads, then a few light legume soups and lean fish */
+const HEALTHY_EXTRA = new Set(["h-lentil", "h-miso", "n-dal", "me-freekeh", "i-orata"]);
+function healthyRank(r){
+  const t = r.title || "";
+  if (/\bbowl|wrap|meal prep|high-protein/i.test(t) || (r.healthy && r.category !== "Salads")) return 3;
+  if (r.category === "Salads" || /salad|insalat|tabbouleh|fattoush/i.test(t)) return 2;
+  if (HEALTHY_EXTRA.has(r.id)) return 1;
+  return 0;
+}
 const MOODS = [
   {key:"cosy",    label:"Cosy",        shape:"circle",   color:"#dccdf7", pos:[2,4,36,-6],  hint:"warm soups and slow dishes",   title:"Cosy dishes for a slow evening", test:r => r.category === "Soups" || (r.category === "Mains" && r.time >= 35)},
   {key:"curious", label:"Curious",     shape:"swirl",    color:"#c3a3f0", pos:[58,0,32,8],  hint:"something new to try",         title:"Something new to try",           test:r => r.cuisine === "middleeast" || r.cuisine === "japanese"},
   {key:"hungry",  label:"Starving",    shape:"square",   color:"#efc898", pos:[62,30,30,10], hint:"big, filling plates",         title:"Big plates for big appetites",   test:r => r.category === "Mains" && r.serves >= 4},
   {key:"quick",   label:"In a rush",   shape:"bolt",     color:"#f5dcb8", pos:[34,28,28,-4], hint:"ready in 25 minutes or less", title:"Ready in 25 minutes or less",    test:r => r.time > 0 && r.time <= 25},
   {key:"sweet",   label:"Sweet tooth", shape:"round",    color:"#e3a3e8", pos:[0,44,30,4],  hint:"desserts and bakes",           title:"Desserts and bakes",             test:r => r.category === "Desserts" || r.category === "Baking"},
-  {key:"healthy",   label:"Healthy",       shape:"blob",     color:"#a9b8f0", pos:[22,62,34,-8], hint:"light and nourishing",     title:"Light and healthy",        test:r => r.healthy || r.category === "Salads" || (r.category !== "Desserts" && r.category !== "Baking" && kcal(r) > 0 && kcal(r) <= 450)}
+  {key:"healthy",   label:"Healthy",       shape:"blob",     color:"#a9b8f0", pos:[22,62,34,-8], hint:"light and nourishing",     title:"Light and healthy",        test:r => healthyRank(r) > 0, rank:r => healthyRank(r)}
 ];
 /* meal of the day: a row of plain chips under the moods, filtering the same way */
 const MEALS = [
@@ -1999,6 +2008,7 @@ function renderHome(){
   const moodSel = kSel ? {key: state.mood, title: `${kSel.name} kitchen`, kitchen: kSel.key, test: r => r.cuisine === kSel.key}
     : state.mood ? [...MOODS, ...MEALS, ...QUIZ].find(m => m.key === state.mood) : null;
   const all = allRecipes(), moodList = moodSel ? all.filter(moodSel.test) : [];
+  if (moodSel && moodSel.rank) moodList.sort((a, b) => moodSel.rank(b) - moodSel.rank(a));
   const timed = all.filter(r => Number(r.time) > 0).sort((a,b) => a.time - b.time), quickest = timed[0];
   const catCounts = CATS.slice(1).map(c => all.filter(r => r.category === c).length), maxCat = Math.max(1, ...catCounts);
   const today = new Date().toLocaleDateString(undefined, {weekday:"long", day:"numeric", month:"long"});
