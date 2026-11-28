@@ -836,6 +836,8 @@ function pickHello(){
   document.documentElement.style.setProperty("--hello-d", HELLO[i][1]);
 }
 pickHello();
+/* the greeting: Hello! or Ciao!, picked at random once per page load */
+const GREET = Math.random() < .5 ? "Hello!" : "Ciao!";
 /* tap or click "Hello!" for a new colour */
 const bumpHello = el => { pickHello(); el.classList.remove("pop"); void el.offsetWidth; el.classList.add("pop"); };
 document.addEventListener("click", e => { const h = e.target.closest && e.target.closest(".hello"); if (h) bumpHello(h); });
@@ -2043,7 +2045,7 @@ function renderHome(){
     <section class="mood-hero">
       <section class="mh-card mood-pick" id="moods">
         <span class="eyebrow-s">${esc(today)}</span>
-        <h1><span class="hello" role="button" tabindex="0" aria-label="Hello! Tap to change its colour">Hello!</span> What are you in the mood for today?</h1>
+        <h1><span class="hello" role="button" tabindex="0"${GREET === "Ciao!" ? ' lang="it"' : ""} aria-label="${GREET} Tap to change its colour">${GREET}</span> What are you in the mood for today?</h1>
         <div class="mood-chips" role="group" aria-label="Food mood">${MOODS.map(m => `<button class="mchip" type="button" data-mood="${m.key}" aria-pressed="${state.mood === m.key}">${faceSVG(m.shape, m.color)}<span>${m.label}</span></button>`).join("")}</div>
         <div class="mood-chips meal-chips" role="group" aria-label="Meal">${MEALS.map(m => `<button class="mchip meal-chip${m.cls ? " " + m.cls : ""}" type="button" data-mood="${m.key}" aria-pressed="${state.mood === m.key}">${m.label}</button>`).join("")}</div>
         <div class="mood-chips kitchen-chips" role="group" aria-label="Kitchen">${KITCHENS.map(k => `<button class="mchip kchip" type="button" data-mood="k:${k.key}" aria-pressed="${state.mood === "k:" + k.key}" style="background-color:var(${kitchenColor(k.key)})">${esc(k.name)}</button>`).join("")}</div>
