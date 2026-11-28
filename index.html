@@ -2869,10 +2869,15 @@ async function fbStart(){
   try {
     const [appM, authM, fsM] = await Promise.all([import(FB_CDN + "firebase-app.js"), import(FB_CDN + "firebase-auth.js"), import(FB_CDN + "firebase-firestore.js")]);
     fbApi = {...authM, ...fsM};
-    const app = appM.initializeApp(window.DADO_FIREBASE);
+    /* sign in through our own domain when the /__/ proxy is in place: browsers block Firebase's
+       firebaseapp.com helper as a third party (the popup hangs), and Google then shows dadofood.com */
+    const cfg = {...window.DADO_FIREBASE};
+    try { const r = await fetch("/__/auth/iframe.js", {method: "HEAD", cache: "no-store"}); if (r.ok && /javascript/.test(r.headers.get("content-type") || "")) cfg.authDomain = location.host; } catch {}
+    const app = appM.initializeApp(cfg);
     fbAuth = authM.getAuth(app); fbStore = fsM.getFirestore(app);
     fbAuth.languageCode = navigator.language || "en";
     FB.ready = true; renderMenu();
+    authM.getRedirectResult(fbAuth).catch(err => { if (err && err.code) fbSay("Google sign-in didn't finish. Please try again."); });
     // finishing an emailed sign-in link
     if (authM.isSignInWithEmailLink(fbAuth, location.href)){
       let email = ""; try { email = localStorage.getItem("dado-signin-email") || ""; } catch {}
