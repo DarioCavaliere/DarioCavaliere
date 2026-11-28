@@ -83,13 +83,13 @@ function related(r){
 function recipePage(r){
   const title = `${r.title} recipe – ${cfg.siteName}`;
   const desc = clip(`${r.summary} Ready in ${fmtTime(r.time)}, serves ${r.serves}.`, 158);
-  const og = `/img/og/${r.id}.jpg`;
+  const og = r.photo ? `/img/og/${r.id}.jpg` : `/img/og/${cfg.homeImage}.jpg`;
   const kSlug = kitchenSlug(r.kitchen);
   const diet = r.diet === "Vegan" ? ["https://schema.org/VeganDiet", "https://schema.org/VegetarianDiet"] : (r.diet === "Vegetarian" || r.vegetarian) ? ["https://schema.org/VegetarianDiet"] : undefined;
   const schema = {
     "@context": "https://schema.org", "@type": "Recipe",
     name: r.title, description: r.summary, url: abs(r.url),
-    image: [abs(`/img/1x1/${r.id}.webp`), abs(`/img/4x3/${r.id}.webp`), abs(og)],
+    image: r.photo ? [abs(`/img/1x1/${r.id}.webp`), abs(`/img/4x3/${r.id}.webp`), abs(og)] : [abs("/icon-512.png")],
     author: { "@type": "Organization", name: cfg.siteName, url: BASE + "/" },
     publisher: { "@type": "Organization", name: cfg.siteName, logo: { "@type": "ImageObject", url: abs("/icon-512.png") } },
     datePublished: cfg.published, dateModified: today,
@@ -115,7 +115,7 @@ function recipePage(r){
 ${topbar()}
 <nav class="crumbs" aria-label="Breadcrumb"><a href="/">${esc(cfg.siteName)}</a> › <a href="/recipes/">Recipes</a> › <a href="/recipes/#${kSlug}">${esc(kitchenLabel(r.kitchen))}</a> › <span aria-current="page">${esc(r.title)}</span></nav>
 <main class="recipe">
-  <figure class="hero"><img src="/assets/food/${r.id}-wide.webp" alt="${esc(r.title)}" width="1200" height="670" fetchpriority="high"></figure>
+  ${r.photo ? `<figure class="hero"><img src="/assets/food/${r.id}-wide.webp" alt="${esc(r.title)}" width="1200" height="670" fetchpriority="high"></figure>` : `<figure class="hero hero-ph"><img src="/img/logo.png" alt="" width="300" height="195"><figcaption>Photo coming soon</figcaption></figure>`}
   <header class="rhead">
     <p class="eyebrow">${esc([r.course || r.category, r.kitchen].filter(Boolean).join(" · "))}</p>
     <h1>${esc(r.title)}</h1>
@@ -145,7 +145,7 @@ ${footer()}
 </html>
 `;
 }
-const card = r => `<a class="card" href="${r.url}"><img src="/assets/food/${r.id}-wide.webp" alt="" width="1200" height="670" loading="lazy"><span class="ct">${esc(r.title)}</span><span class="cm">${esc(fmtTime(r.time))} · serves ${r.serves}</span></a>`;
+const card = r => `<a class="card" href="${r.url}"><img src="${r.photo ? `/assets/food/${r.id}-wide.webp` : "/img/placeholder.png"}" alt="" width="1200" height="670" loading="lazy"><span class="ct">${esc(r.title)}</span><span class="cm">${esc(fmtTime(r.time))} · serves ${r.serves}</span></a>`;
 
 /* ---------- recipes index ---------- */
 function recipesIndex(){
@@ -203,7 +203,7 @@ write("sitemap.xml", `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   <url><loc>${abs("/")}</loc><lastmod>${today}</lastmod></url>
   <url><loc>${abs("/recipes/")}</loc><lastmod>${today}</lastmod></url>
-${recipes.map(r => `  <url><loc>${esc(abs(r.url))}</loc><lastmod>${today}</lastmod><image:image><image:loc>${esc(abs(`/img/4x3/${r.id}.webp`))}</image:loc></image:image></url>`).join("\n")}
+${recipes.map(r => `  <url><loc>${esc(abs(r.url))}</loc><lastmod>${today}</lastmod>${r.photo ? `<image:image><image:loc>${esc(abs(`/img/4x3/${r.id}.webp`))}</image:loc></image:image>` : ""}</url>`).join("\n")}
 </urlset>
 `);
 write("site.webmanifest", JSON.stringify({ name: cfg.siteName, short_name: cfg.siteName, description: cfg.description, start_url: "/", display: "standalone", background_color: "#a48cf4", theme_color: "#a48cf4",

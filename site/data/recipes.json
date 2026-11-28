@@ -5794,7 +5794,7 @@
   "kitchenKey": "",
   "time": 75,
   "serves": 10,
-  "kcal": 120,
+  "kcal": 150,
   "diet": "Vegan",
   "vegetarian": true,
   "spicy": false,
@@ -5827,8 +5827,53 @@
    "Bake: pour the batter into the tin and bake for about 45 to 55 minutes, until a toothpick pushed into the centre comes out clean.",
    "Cool: leave it in the tin for 10 minutes, then lift it onto a cooling rack. Let it cool before slicing."
   ],
-  "keep": "Keep it covered or in an airtight tin at room temperature for up to 2 days. Wrap cut edges so they don't dry out.",
+  "keep": "Keep it covered in the fridge for up to 3 to 4 days. It firms up as it chills, and a slice is good straight from the fridge.",
   "photo": true
+ },
+ {
+  "id": "x-apple-cake",
+  "slug": "",
+  "title": "High-protein apple cake",
+  "summary": "A soft, cinnamon-scented apple cake made with Greek yogurt, whey protein and almond flour instead of flour and butter. About 11 g of protein a slice, low in carbs, with sugar optional.",
+  "category": "Baking",
+  "course": "",
+  "kitchen": "",
+  "kitchenKey": "",
+  "time": 55,
+  "serves": 8,
+  "kcal": 130,
+  "diet": "Vegetarian",
+  "vegetarian": true,
+  "spicy": false,
+  "allergens": [
+   "Dairy",
+   "Egg",
+   "Nuts"
+  ],
+  "ingredients": [
+   "2 medium apples",
+   "2 eggs",
+   "200 g low-fat Greek yogurt (0%)",
+   "60 g vanilla whey protein powder",
+   "60 g almond flour",
+   "1 tsp baking powder",
+   "1 1/2 tsp cinnamon",
+   "1 tsp vanilla extract",
+   "Sweetener, to taste (optional)",
+   "1 pinch salt"
+  ],
+  "steps": [
+   "Prepare the apples: heat your fan oven to 160°C. Peel the apples if you like, cut them into small cubes and toss them with the cinnamon.",
+   "Mix the wet ingredients: whisk the eggs with the Greek yogurt and vanilla extract until smooth.",
+   "Add the dry ingredients: add the protein powder, almond flour, baking powder, sweetener and a pinch of salt, and mix until combined.",
+   "Add the apples: fold the apple cubes into the batter, keeping a few pieces back to decorate the top.",
+   "Prepare the tin: pour the batter into a lined 18 to 20 cm round cake tin and scatter the remaining apple pieces on top.",
+   "Bake at 160°C fan for 30 to 40 minutes, until a toothpick pushed into the centre comes out without wet batter. Don't raise the temperature: protein powder dries out quickly.",
+   "Cool and serve: let it cool completely before slicing. A night in the fridge gives it a firmer, more cake-like texture. It's best with 2 tablespoons of 0% Greek yogurt and a little extra cinnamon.",
+   "Variations: for fewer carbs, use 1 apple instead of 2. For extra protein, use 80 g whey and 40 g almond flour, adding a little more yogurt if the batter seems dry."
+  ],
+  "keep": "Keep it covered in the fridge for up to 3 to 4 days. It firms up as it chills, and a slice is good straight from the fridge.",
+  "photo": false
  },
  {
   "id": "x-brownies",

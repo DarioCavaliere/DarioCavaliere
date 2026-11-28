@@ -32,6 +32,8 @@ def main():
     logo = Image.open(os.path.join(ROOT, "assets", "logo-artboard-6-original.png")).convert("RGBA")
     logo = logo.crop(logo.getchannel("A").point(lambda v: 255 if v > 20 else 0).getbbox())
     lw = 600; logo.resize((lw, round(logo.height * lw / logo.width)), Image.LANCZOS).save(os.path.join(DIST, "img", "logo.png"), optimize=True)
+    ph = Image.new("RGBA", (1200, 670), (255, 253, 248, 255)); l = logo.copy(); l.thumbnail((420, 300), Image.LANCZOS)
+    ph.alpha_composite(l, ((1200 - l.width) // 2, (670 - l.height) // 2)); ph.convert("RGB").save(os.path.join(DIST, "img", "placeholder.png"), optimize=True)
     def icon(size, radius_ratio=.22):
         base = Image.new("RGBA", (size, size), (0, 0, 0, 0))
         m = Image.new("L", (size, size), 0); ImageDraw.Draw(m).rounded_rectangle((0, 0, size - 1, size - 1), radius=round(size * radius_ratio), fill=255)
