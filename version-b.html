@@ -788,6 +788,9 @@ a,button,label,[role="button"],[role="checkbox"]{-webkit-tap-highlight-color:tra
 .tchip.alg-chip{gap:6px;padding:4px 12px 4px 4px}
 .tchip.alg-chip img.alg{width:24px;height:24px;border-radius:50%;flex:none}
 .legend-alg{flex-basis:100%;margin-top:6px}
+.fine{margin-top:22px;padding-top:16px;border-top:2px solid rgba(22,22,22,.15);display:grid;gap:8px;max-width:820px;font-size:.78rem;line-height:1.55;opacity:.9}
+.fine p{margin:0}
+.market .fine{display:none}
 footer{color:var(--ink)}
 .public #shareBtn,.public .nav-right[href="#share"]{display:none!important}
 [hidden]{display:none!important}
@@ -823,7 +826,12 @@ footer{color:var(--ink)}
     <div class="menu-panel" id="menuPanel" role="dialog" aria-label="Menu" hidden></div>
   </div>
   <main id="view"></main>
-  <footer><p class="legend" id="legend"></p></footer>
+  <footer><p class="legend" id="legend"></p>
+  <div class="fine">
+    <p><b>Good to know.</b> Recipes on Dado are for general information and home cooking only. Calories, diet labels (vegetarian, vegan, healthy) and allergen icons are worked out automatically from the ingredient list and are estimates, not guarantees. If you have a food allergy, intolerance or a medical or dietary condition, always check product labels and ask a doctor or dietitian before relying on a recipe. Cooking times and temperatures vary between ovens and hobs; make sure food, especially meat, fish and eggs, is cooked safely. Food images are visual representations of the recipe; actual results may vary depending on ingredients, preparation and presentation.</p>
+    <p>© <span class="fine-year">2026</span> Dado · dadofood.com. All rights reserved. Unless stated otherwise, the recipes, text, photos and logo on this site belong to Dado and may not be copied or republished without permission. You're welcome to share links to any recipe.</p>
+  </div>
+  </footer>
 </div>
 
 <script>
@@ -838,6 +846,7 @@ function pickHello(){
   document.documentElement.style.setProperty("--hello-d", HELLO[i][1]);
 }
 pickHello();
+document.querySelectorAll(".fine-year").forEach(e => { e.textContent = Math.max(2026, new Date().getFullYear()); });
 /* the greeting: Hello! or Ciao!, picked at random once per page load */
 const GREET = Math.random() < .5 ? "Hello!" : "Ciao!";
 /* tap or click "Hello!" for a new colour */
